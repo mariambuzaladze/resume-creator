@@ -3,3 +3,21 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+.custom-file-input .hidden {
+  display: none;
+}
+
+.custom-file-input .custom-button {
+  background-color: #0e80bf;
+  color: white;
+  padding: 4px 10px;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.custom-file-input .custom-button:hover {
+  background-color: #075e8e;
+}
