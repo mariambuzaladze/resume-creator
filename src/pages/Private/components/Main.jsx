@@ -3,7 +3,6 @@ import { Formik, Form, Field, ErrorMessage, useField } from "formik";
 import * as Yup from "yup";
 import React from "react";
 
-// Custom field component to handle styling and error messages
 const CustomField = ({ label, hint, ...props }) => {
   const [field, meta] = useField(props);
   const errorStyle = meta.touched && meta.error ? "border-red-500" : "";
@@ -17,7 +16,7 @@ const CustomField = ({ label, hint, ...props }) => {
     : "text-green-500";
 
   return (
-    <div className="mb-4">
+    <div>
       <label htmlFor={props.id || props.name} className="font-bold block mb-2">
         {label}
       </label>
@@ -84,7 +83,7 @@ export default function Main() {
         onSubmit={handleSubmit}
       >
         {({ errors, touched }) => (
-          <Form className="flex flex-col justify-center h-screen gap-4 md:gap-6">
+          <Form className="flex flex-col justify-center min-h-screen gap-4 md:gap-6">
             <div className="flex flex-col md:flex-row justify-between w-full">
               <CustomField
                 label="სახელი"
