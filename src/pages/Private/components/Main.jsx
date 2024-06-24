@@ -1,6 +1,40 @@
 import { Link } from "react-router-dom";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form, Field, ErrorMessage, useField } from "formik";
 import * as Yup from "yup";
+import React from "react";
+
+// Custom field component to handle styling and error messages
+const CustomField = ({ label, hint, ...props }) => {
+  const [field, meta] = useField(props);
+  const errorStyle = meta.touched && meta.error ? "border-red-500" : "";
+  const validStyle = meta.touched && !meta.error ? "border-green-500" : "";
+  const baseStyle = "border border-gray-300 rounded-lg p-2 w-full";
+
+  const messageColor = !meta.touched
+    ? "text-gray-500"
+    : meta.error
+    ? "text-red-500"
+    : "text-green-500";
+
+  return (
+    <div className="mb-4">
+      <label htmlFor={props.id || props.name} className="font-bold block mb-2">
+        {label}
+      </label>
+      <input
+        {...field}
+        {...props}
+        className={`${baseStyle} ${errorStyle} ${validStyle}`}
+      />
+      <p className={`text-sm ${messageColor}`}>{hint}</p>
+      <ErrorMessage
+        name={props.name}
+        component="p"
+        className="text-red-500 text-sm"
+      />
+    </div>
+  );
+};
 
 export default function Main() {
   const handleButtonClick = () => {
@@ -38,7 +72,9 @@ export default function Main() {
       .required("სავალდებულოა"),
   });
 
-  const handleSubmit = () => {};
+  const handleSubmit = (values) => {
+    console.log(values);
+  };
 
   return (
     <main>
@@ -48,44 +84,25 @@ export default function Main() {
         onSubmit={handleSubmit}
       >
         {({ errors, touched }) => (
-          <Form className="flex flex-col justiy-center items-centerh-screen gap-4 md:gap-6">
-            <div className="flex flex-col md:flex-row justify-between">
-              <div>
-                <label htmlFor="name" className="font-bold block mb-2">
-                  სახელი
-                </label>
-                <Field
-                  type="text"
-                  name="name"
-                  placeholder="ანზორ"
-                  className="border border-gray-300 rounded-lg p-2 w-full"
-                />
-                <ErrorMessage
-                  name="name"
-                  component="p"
-                  className="text-red-500 text-sm"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="surname" className="font-bold block mb-2">
-                  გვარი
-                </label>
-                <Field
-                  type="text"
-                  name="surname"
-                  placeholder="მუმლაძე"
-                  className="border border-gray-300 rounded-lg p-2 w-full"
-                />
-                <ErrorMessage
-                  name="surname"
-                  component="p"
-                  className="text-red-500 text-sm"
-                />
-              </div>
+          <Form className="flex flex-col justify-center h-screen gap-4 md:gap-6">
+            <div className="flex flex-col md:flex-row justify-between w-full">
+              <CustomField
+                label="სახელი"
+                name="name"
+                type="text"
+                placeholder="ანზორ"
+                hint="მინიმუმ 2 სიმბოლო, მხოლოდ ქართული ასოები"
+              />
+              <CustomField
+                label="გვარი"
+                name="surname"
+                type="text"
+                placeholder="მუმლაძე"
+                hint="მინიმუმ 2 სიმბოლო, მხოლოდ ქართული ასოები"
+              />
             </div>
 
-            <div>
+            <div className="mb-4 w-full">
               <label htmlFor="image" className="font-bold block mb-2">
                 პირადი ფოტოს ატვირთვა
               </label>
@@ -95,8 +112,7 @@ export default function Main() {
                   type="file"
                   accept="image/*"
                   name="image"
-                  placeholder="ატვირთვა"
-                  className="hidden"
+                  className={`hidden`}
                 />
                 <button
                   type="button"
@@ -113,7 +129,7 @@ export default function Main() {
               />
             </div>
 
-            <div>
+            <div className="mb-4 w-full">
               <label htmlFor="aboutMe" className="font-bold block mb-2">
                 ჩემ შესახებ (არასავალდებულო)
               </label>
@@ -130,42 +146,26 @@ export default function Main() {
               />
             </div>
 
-            <div>
-              <label htmlFor="email" className="font-bold block mb-2">
-                ელ.ფოსტა
-              </label>
-              <Field
-                type="email"
-                name="email"
-                placeholder="anzorr666@redberry.ge"
-                className="border border-gray-300 rounded-lg p-2 w-full"
-              />
-              <ErrorMessage
-                name="email"
-                component="p"
-                className="text-red-500 text-sm"
-              />
-            </div>
+            <CustomField
+              label="ელ.ფოსტა"
+              name="email"
+              type="email"
+              placeholder="anzorr666@redberry.ge"
+              hint="უნდა მთავრდებოდეს @redberry.ge-ით"
+            />
+            <CustomField
+              label="მობილურის ნომერი"
+              name="number"
+              type="text"
+              placeholder="+995 551 12 34 56"
+              hint="უნდა აკმაყოფილებდეს ქართული მობილურის ნომრის ფორმატს"
+            />
 
-            <div>
-              <label htmlFor="number" className="font-bold block mb-2">
-                მობილურის ნომერი
-              </label>
-              <Field
-                type="number"
-                name="number"
-                placeholder="+995 551 12 34 56"
-                className="border border-gray-300 rounded-lg p-2 w-full"
-              />
-              <ErrorMessage
-                name="number"
-                component="p"
-                className="text-red-500 text-sm"
-              />
-            </div>
-
-            <Link to={"/experience"} className="flex justify-end">
-              <button className="text-white bg-[#6B40E3] rounded-sm pt-1 pb-1 p-4 mt-10 mb-4 md:mb-8">
+            <Link to={"/experience"} className="flex justify-end w-full">
+              <button
+                type="submit"
+                className="text-white bg-[#6B40E3] rounded-sm pt-1 pb-1 p-4 mt-10 mb-4 md:mb-8"
+              >
                 შემდეგი
               </button>
             </Link>
