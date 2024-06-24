@@ -7,9 +7,36 @@ export default function Main() {
     document.getElementById("image").click();
   };
 
-  const initialValues = {};
+  const initialValues = {
+    name: "",
+    surname: "",
+    image: "",
+    aboutMe: "",
+    email: "",
+    number: "",
+  };
 
-  const validationSchema = Yup.object().shape({});
+  const validationSchema = Yup.object().shape({
+    name: Yup.string()
+      .min(2, "მინიმუმ 2 სიმბოლო")
+      .matches(/^[ა-ჰ]+$/, "მხოლოდ ქართული ასოები")
+      .required("სავალდებულოა"),
+    surname: Yup.string()
+      .min(2, "მინიმუმ 2 სიმბოლო")
+      .matches(/^[ა-ჰ]+$/, "მხოლოდ ქართული ასოები")
+      .required("სავალდებულოა"),
+    image: Yup.string().required("სავალდებულოა"),
+    email: Yup.string()
+      .email("არავალიდური ელ.ფოსტა")
+      .matches(/@redberry\.ge$/, "ელ.ფოსტა უნდა მთავრდებოდეს @redberry.ge-ით")
+      .required("სავალდებულოა"),
+    number: Yup.string()
+      .matches(
+        /^(\+995)?(5\d{8})$/,
+        "უნდა აკმაყოფილებდეს ქართული მობილურის ნომრის ფორმატს"
+      )
+      .required("სავალდებულოა"),
+  });
 
   const handleSubmit = () => {};
 
