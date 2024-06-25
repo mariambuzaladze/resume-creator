@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import Header from "./components/Header";
 import GoBack from "../../shared-components/GoBack";
+import Main from "./components/Main";
 
 export default function Experience() {
   return (
@@ -9,9 +10,7 @@ export default function Experience() {
 
       <div className="flex flex-col gap-4 w-full mr-6 md:gap-8">
         <Header />
-        <Link to={"/education"}>
-          <button>შემდეგი</button>
-        </Link>
+        <Main />
       </div>
     </div>
   );
