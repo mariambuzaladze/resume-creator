@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage, useField } from "formik";
 import * as Yup from "yup";
 import React from "react";
+import { useContext } from "react";
+import { dataContext } from "../../../App";
 
 const CustomField = ({ label, hint, ...props }) => {
   const [field, meta] = useField(props);
@@ -36,6 +38,8 @@ const CustomField = ({ label, hint, ...props }) => {
 };
 
 export default function Main() {
+  const { data, setData } = useContext(dataContext);
+
   const handleButtonClick = () => {
     document.getElementById("image").click();
   };

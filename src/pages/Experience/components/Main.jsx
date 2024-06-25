@@ -9,6 +9,8 @@ import {
 } from "formik";
 import * as Yup from "yup";
 import Line from "../../../shared-components/Line";
+import { useContext, useEffect, useState } from "react";
+import { dataContext } from "../../../App";
 
 const CustomField = ({ label, hint, ...props }) => {
   const [field, meta] = useField(props);
@@ -43,9 +45,9 @@ const CustomField = ({ label, hint, ...props }) => {
 };
 
 export default function Main() {
+  const { data, setData } = useContext(dataContext);
   const navigate = useNavigate();
-
-  const initialValues = {
+  const [initialValues, setInitialValues] = useState({
     experiences: [
       {
         position: "",
@@ -55,7 +57,17 @@ export default function Main() {
         description: "",
       },
     ],
-  };
+  });
+
+  useEffect(() => {
+    const storedData = JSON.parse(localStorage.getItem("data"));
+    if (
+      storedData &&
+      storedData.find((item) => item.experiences) !== undefined
+    ) {
+      setInitialValues(storedData.find((item) => item.experiences));
+    }
+  }, []);
 
   const validationSchema = Yup.object().shape({
     experiences: Yup.array().of(
@@ -74,6 +86,8 @@ export default function Main() {
   });
 
   const handleSubmit = (values) => {
+    setData((prevData) => [...prevData, values]);
+    localStorage.setItem("data", JSON.stringify(data));
     console.log(values);
     navigate("/education");
   };
@@ -82,6 +96,7 @@ export default function Main() {
     <main>
       <Formik
         initialValues={initialValues}
+        enableReinitialize={true}
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
@@ -151,7 +166,6 @@ export default function Main() {
             </FieldArray>
 
             <button
-              onClick={handleSubmit}
               type="submit"
               className="self-end text-white bg-[#6B40E3] rounded-sm pt-1 pb-1 p-4 mt-10 mb-4 md:mb-8"
             >
