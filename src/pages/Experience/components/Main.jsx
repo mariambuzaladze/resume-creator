@@ -1,6 +1,14 @@
-import { Link } from "react-router-dom";
-import { Formik, Form, Field, ErrorMessage, useField } from "formik";
+import { useNavigate } from "react-router-dom";
+import {
+  Formik,
+  Form,
+  Field,
+  ErrorMessage,
+  useField,
+  FieldArray,
+} from "formik";
 import * as Yup from "yup";
+import Line from "../../../shared-components/Line";
 
 const CustomField = ({ label, hint, ...props }) => {
   const [field, meta] = useField(props);
@@ -35,23 +43,40 @@ const CustomField = ({ label, hint, ...props }) => {
 };
 
 export default function Main() {
+  const navigate = useNavigate();
+
   const initialValues = {
-    position: "",
-    employer: "",
-    started_at: "",
-    ended_at: "",
-    description: "",
+    experiences: [
+      {
+        position: "",
+        employer: "",
+        started_at: "",
+        ended_at: "",
+        description: "",
+      },
+    ],
   };
 
   const validationSchema = Yup.object().shape({
-    position: Yup.string().min(2, "მინიმუმ 2 სიმბოლო").required("სავალდებულოა"),
-    employer: Yup.string().min(2, "მინიმუმ 2 სიმბოლო").required("სავალდებულოა"),
-    started_at: Yup.date().required("სავალდებულოა"),
-    ended_at: Yup.date().required("სავალდებულოა"),
-    description: Yup.string().required("სავალდებულოა"),
+    experiences: Yup.array().of(
+      Yup.object().shape({
+        position: Yup.string()
+          .min(2, "მინიმუმ 2 სიმბოლო")
+          .required("სავალდებულოა"),
+        employer: Yup.string()
+          .min(2, "მინიმუმ 2 სიმბოლო")
+          .required("სავალდებულოა"),
+        started_at: Yup.date().required("სავალდებულოა"),
+        ended_at: Yup.date().required("სავალდებულოა"),
+        description: Yup.string().required("სავალდებულოა"),
+      })
+    ),
   });
 
-  const handleSubmit = () => {};
+  const handleSubmit = (values) => {
+    console.log(values);
+    navigate("/education");
+  };
 
   return (
     <main>
@@ -60,55 +85,78 @@ export default function Main() {
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
-        {({ errors, touched }) => (
-          <Form className="flex flex-col min-h-screen gap-4 md:gap-6">
-            <CustomField
-              label="თანამდებობა"
-              name="position"
-              type="email"
-              placeholder="დეველოპერი, დიზაინერი, ა.შ."
-              hint="მინიმუმ 2 სიმბოლო"
-            />
+        {({ values }) => (
+          <Form className="flex flex-col min-h-screen gap-4 md:gap-8">
+            <FieldArray name="experiences">
+              {({ insert, remove, push }) => (
+                <div>
+                  {values.experiences.length > 0 &&
+                    values.experiences.map((experience, index) => (
+                      <div className="flex flex-col gap-4 mb-4" key={index}>
+                        <CustomField
+                          label="თანამდებობა"
+                          name={`experiences.${index}.position`}
+                          type="text"
+                          placeholder="დეველოპერი, დიზაინერი, ა.შ."
+                          hint="მინიმუმ 2 სიმბოლო"
+                        />
+                        <CustomField
+                          label="დამსაქმებელი"
+                          name={`experiences.${index}.employer`}
+                          type="text"
+                          placeholder="დამსაქმებელი"
+                          hint="მინიმუმ 2 სიმბოლო"
+                        />
+                        <div className="flex flex-col md:flex-row justify-between w-full">
+                          <CustomField
+                            label="დაწყების რიცხვი"
+                            name={`experiences.${index}.started_at`}
+                            type="date"
+                            hint="სავალდებულოა"
+                          />
+                          <CustomField
+                            label="დამთავრების რიცხვი"
+                            name={`experiences.${index}.ended_at`}
+                            type="date"
+                            hint="სავალდებულოა"
+                          />
+                        </div>
+                        <CustomField
+                          label="აღწერა"
+                          name={`experiences.${index}.description`}
+                          type="textarea"
+                          placeholder="როლი თანამდებობაზე და ზოგადი აღწერა"
+                          hint="სავალდებულოა"
+                        />
+                        <Line />
+                      </div>
+                    ))}
+                  <button
+                    type="button"
+                    className="text-white bg-[#62A1EB] rounded-sm pt-1 pb-1 p-4 self-start"
+                    onClick={() =>
+                      push({
+                        position: "",
+                        employer: "",
+                        started_at: "",
+                        ended_at: "",
+                        description: "",
+                      })
+                    }
+                  >
+                    მეტი გამოცდილების დამატება
+                  </button>
+                </div>
+              )}
+            </FieldArray>
 
-            <CustomField
-              label="დამსაქმებელი"
-              name="employer"
-              type="text"
-              placeholder="დამსაქმებელი"
-              hint="მინიმუმ 2 სიმბოლო"
-            />
-
-            <div className="flex flex-col md:flex-row justify-between w-full">
-              <CustomField
-                label="დაწყების რიცხვი"
-                name="started_at"
-                type="date"
-                hint="სავალდებულოა"
-              />
-              <CustomField
-                label="დამთავრების რიცხვი"
-                name="ended_at"
-                type="date"
-                hint="სავალდებულოა"
-              />
-            </div>
-
-            <CustomField
-              label="აღწერა"
-              name="description"
-              type="textArea"
-              placeholder="როლი თანამდებობაზე და ზოგადი აღწერა"
-              hint="სავალდებულოა"
-            />
-
-            <Link to={"/education"} className="flex justify-end w-full">
-              <button
-                type="submit"
-                className="text-white bg-[#6B40E3] rounded-sm pt-1 pb-1 p-4 mt-10 mb-4 md:mb-8"
-              >
-                შემდეგი
-              </button>
-            </Link>
+            <button
+              onClick={handleSubmit}
+              type="submit"
+              className="self-end text-white bg-[#6B40E3] rounded-sm pt-1 pb-1 p-4 mt-10 mb-4 md:mb-8"
+            >
+              შემდეგი
+            </button>
           </Form>
         )}
       </Formik>
