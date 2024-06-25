@@ -12,7 +12,7 @@ const CustomField = ({ label, hint, ...props }) => {
   const messageColor = !meta.touched
     ? "text-gray-500"
     : meta.error
-    ? "text-red-500"
+    ? "hidden"
     : "text-green-500";
 
   return (
