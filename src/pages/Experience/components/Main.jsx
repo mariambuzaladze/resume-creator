@@ -35,8 +35,22 @@ const CustomField = ({ label, hint, ...props }) => {
 };
 
 export default function Main() {
-  const initialValues = {};
-  const validationSchema = {};
+  const initialValues = {
+    position: "",
+    employer: "",
+    started_at: "",
+    ended_at: "",
+    description: "",
+  };
+
+  const validationSchema = Yup.object().shape({
+    position: Yup.string().min(2, "მინიმუმ 2 სიმბოლო").required("სავალდებულოა"),
+    employer: Yup.string().min(2, "მინიმუმ 2 სიმბოლო").required("სავალდებულოა"),
+    started_at: Yup.date().required("სავალდებულოა"),
+    ended_at: Yup.date().required("სავალდებულოა"),
+    description: Yup.string().required("სავალდებულოა"),
+  });
+
   const handleSubmit = () => {};
 
   return (
