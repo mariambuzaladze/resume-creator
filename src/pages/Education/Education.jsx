@@ -6,7 +6,7 @@ function Education() {
   return (
     <main className="bg-[#f9f9f9] min-h-svh relative">
       <div className="absolute top-[45px] left-[48px]">
-        <GoBack />
+        <GoBack linkTo={"/experience"} />
       </div>
       <section className="min-h-svh flex flex-col justify-between px-[150px] pt-[47px] pb-[65px]">
         <div>

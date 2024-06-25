@@ -101,7 +101,7 @@ export default function Main() {
               hint="სავალდებულოა"
             />
 
-            <Link to={"/experience"} className="flex justify-end w-full">
+            <Link to={"/education"} className="flex justify-end w-full">
               <button
                 type="submit"
                 className="text-white bg-[#6B40E3] rounded-sm pt-1 pb-1 p-4 mt-10 mb-4 md:mb-8"
