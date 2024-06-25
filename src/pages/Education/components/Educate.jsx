@@ -18,7 +18,7 @@ function Educate() {
           მინიმუმ 2 სიმბოლო
         </span>
       </section>
-      <section className="flex items-center gap-[56px]">
+      <section className="flex items-center justify-between">
         <div className="flex flex-col gap-2">
           <label
             htmlFor="xarisxi"
@@ -34,7 +34,7 @@ function Educate() {
             <option value="option3">Option 3</option>
           </select> */}
           <div className="relative">
-            <select className="appearance-none w-[371px] text-base text-[#000] opacity-60 font-[400] leading-[1.31] bg-[#fff] rounded-[4px] border border-[#bcbcbc] flex items-center justify-between px-4 py-[13px] focus:outline-none">
+            <select className="appearance-none w-[371px] text-base text-[#000] opacity-60 font-[400] leading-[1.31] bg-[#fff] rounded-[4px] border border-[#bcbcbc] flex items-center justify-between px-4 py-[14px] focus:outline-none">
               <option value="" className="" hidden selected>
                 აირჩიეთ ხარისხი
               </option>
@@ -67,7 +67,11 @@ function Educate() {
           >
             დამთავრების რიცხვი
           </label>
-          <input id="date" type="date" />
+          <input
+            id="date"
+            type="date"
+            className="outline-none w-[371px] rounded-[4px] px-4 py-[13px] text-base text-[#000] opacity-60 font-[400] leading-[1.31] border border-solid border-[#bcbcbc]"
+          />
         </div>
       </section>
       <div className="flex flex-col gap-2 mt-1">
