@@ -26,7 +26,39 @@ function Educate() {
           >
             ხარისხი
           </label>
-          <input id="xarisxi" type="checkbox" />
+          {/* <input id="xarisxi" type="checkbox" />
+          <select name="" id="xarisxi" className="">
+            xarisxi
+            <option value="option1">Option 1</option>
+            <option value="option2">Option 2</option>
+            <option value="option3">Option 3</option>
+          </select> */}
+          <div className="relative">
+            <select className="appearance-none w-[371px] text-base text-[#000] opacity-60 font-[400] leading-[1.31] bg-[#fff] rounded-[4px] border border-[#bcbcbc] flex items-center justify-between px-4 py-[13px] focus:outline-none">
+              <option value="" className="" hidden selected>
+                აირჩიეთ ხარისხი
+              </option>
+              <option
+                value="option1"
+                // className="appearance-none text-base text-[#1a1a1a] font-[400] leading-[1.31] px-4 py-[10px]"
+              >
+                საშუალო სკოლის დიპლომი
+              </option>
+              <option value="option2">ზოგადსაგანმანათლებლო დიპლომი</option>
+              <option value="option3">ბაკალავრი</option>
+              <option value="option4">მაგისტრი</option>
+              <option value="option5">დოქტორი</option>
+              <option value="option6">ასოცირებული ხარისხი</option>
+              <option value="option7">სტუდენტი</option>
+              <option value="option8">კოლეჯი (ხარისხის გარეშე)</option>
+              <option value="option9">სხვა</option>
+            </select>
+            <img
+              src="/public/icon-arrow-down.svg"
+              className="absolute right-[22px] top-[23px]"
+              alt="Dropdown Icon"
+            />
+          </div>
         </div>
         <div className="flex flex-col gap-2">
           <label
