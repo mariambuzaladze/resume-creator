@@ -13,7 +13,15 @@ function App() {
   const resumes = [];
   const storedData = JSON.parse(localStorage.getItem("data")) || {
     general: {},
-    experience: [],
+    experience: [
+      {
+        position: "",
+        employer: "",
+        started_at: "",
+        ended_at: "",
+        description: "",
+      },
+    ],
     education: {},
   };
   const [data, setData] = useState(storedData);
