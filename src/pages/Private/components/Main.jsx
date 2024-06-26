@@ -1,8 +1,8 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage, useField } from "formik";
 import * as Yup from "yup";
 import React from "react";
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 import { dataContext } from "../../../App";
 
 const CustomField = ({ label, hint, ...props }) => {
@@ -38,20 +38,29 @@ const CustomField = ({ label, hint, ...props }) => {
 };
 
 export default function Main() {
+  const navigate = useNavigate();
   const { data, setData } = useContext(dataContext);
 
   const handleButtonClick = () => {
     document.getElementById("image").click();
   };
 
-  const initialValues = {
+  const [initialValues, setInitialValues] = useState({
     name: "",
     surname: "",
     image: "",
     aboutMe: "",
     email: "",
     number: "",
-  };
+  });
+
+  useEffect(() => {
+    const storedData = JSON.parse(localStorage.getItem("data"));
+    console.log(storedData);
+    if (storedData && storedData.general) {
+      setInitialValues(storedData.general);
+    }
+  }, []);
 
   const validationSchema = Yup.object().shape({
     name: Yup.string()
@@ -62,7 +71,7 @@ export default function Main() {
       .min(2, "მინიმუმ 2 სიმბოლო")
       .matches(/^[ა-ჰ]+$/, "მხოლოდ ქართული ასოები")
       .required("სავალდებულოა"),
-    image: Yup.string().required("სავალდებულოა"),
+    image: Yup.mixed().required("სავალდებულოა"),
     email: Yup.string()
       .email("არავალიდური ელ.ფოსტა")
       .matches(/@redberry\.ge$/, "ელ.ფოსტა უნდა მთავრდებოდეს @redberry.ge-ით")
@@ -76,7 +85,17 @@ export default function Main() {
   });
 
   const handleSubmit = (values) => {
-    console.log(values);
+    setData((prevData) => {
+      const newGeneral = values;
+
+      return {
+        ...prevData,
+        general: newGeneral,
+      };
+    });
+
+    localStorage.setItem("data", JSON.stringify(data));
+    navigate("/experience");
   };
 
   return (
@@ -85,8 +104,9 @@ export default function Main() {
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
+        enableReinitialize
       >
-        {({ errors, touched }) => (
+        {({ errors, touched, setFieldValue }) => (
           <Form className="flex flex-col justify-center min-h-screen gap-4 md:gap-6">
             <div className="flex flex-col md:flex-row justify-between w-full">
               <CustomField
@@ -110,12 +130,15 @@ export default function Main() {
                 პირადი ფოტოს ატვირთვა
               </label>
               <div className="custom-file-input ">
-                <Field
+                <input
                   id="image"
                   type="file"
                   accept="image/*"
                   name="image"
-                  className={`hidden`}
+                  onChange={(event) => {
+                    setFieldValue("image", event.currentTarget.files[0]);
+                  }}
+                  className="hidden"
                 />
                 <button
                   type="button"
@@ -164,14 +187,12 @@ export default function Main() {
               hint="უნდა აკმაყოფილებდეს ქართული მობილურის ნომრის ფორმატს"
             />
 
-            <Link to={"/experience"} className="flex justify-end w-full">
-              <button
-                type="submit"
-                className="text-white bg-[#6B40E3] rounded-sm pt-1 pb-1 p-4 mt-10 mb-4 md:mb-8"
-              >
-                შემდეგი
-              </button>
-            </Link>
+            <button
+              type="submit"
+              className="self-end text-white bg-[#6B40E3] rounded-sm pt-1 pb-1 p-4 mt-10 mb-4 md:mb-8"
+            >
+              შემდეგი
+            </button>
           </Form>
         )}
       </Formik>
