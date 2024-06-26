@@ -169,12 +169,23 @@ export default function Main() {
               )}
             </FieldArray>
 
-            <button
-              type="submit"
-              className="self-end text-white bg-[#6B40E3] rounded-sm pt-1 pb-1 p-4 mt-10 mb-4 md:mb-8"
-            >
-              შემდეგი
-            </button>
+            <div className="flex justify-between mt-10 mb-4 md:mb-8">
+              <button
+                onClick={() => {
+                  navigate("/private");
+                }}
+                className="text-white bg-[#6B40E3] rounded-sm pt-1 pb-1 p-4"
+              >
+                უკან
+              </button>
+
+              <button
+                type="submit"
+                className="text-white bg-[#6B40E3] rounded-sm pt-1 pb-1 p-4"
+              >
+                შემდეგი
+              </button>
+            </div>
           </Form>
         )}
       </Formik>
