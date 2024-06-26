@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 
-export default function GoBack({ linkTo }) {
+export default function GoBack() {
   return (
-    <Link to={linkTo}>
+    <Link to={"/"}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="40"
