@@ -10,7 +10,12 @@ import Resume from "./pages/Resume/Resume";
 export const dataContext = createContext({});
 
 function App() {
-  const storedData = JSON.parse(localStorage.getItem("data")) || [];
+  const resumes = [];
+  const storedData = JSON.parse(localStorage.getItem("data")) || {
+    general: {},
+    experience: [],
+    education: {},
+  };
   const [data, setData] = useState(storedData);
 
   useEffect(() => {
@@ -18,7 +23,7 @@ function App() {
   }, [data]);
 
   return (
-    <dataContext.Provider value={{ data, setData }}>
+    <dataContext.Provider value={{ data, setData, resumes }}>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
