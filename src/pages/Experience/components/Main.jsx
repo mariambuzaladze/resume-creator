@@ -61,11 +61,8 @@ export default function Main() {
 
   useEffect(() => {
     const storedData = JSON.parse(localStorage.getItem("data"));
-    if (
-      storedData &&
-      storedData.find((item) => item.experiences) !== undefined
-    ) {
-      setInitialValues(storedData.find((item) => item.experiences));
+    if (storedData && storedData.experience) {
+      setInitialValues({ experiences: storedData.experience });
     }
   }, []);
 
@@ -86,9 +83,16 @@ export default function Main() {
   });
 
   const handleSubmit = (values) => {
-    setData((prevData) => [...prevData, values]);
+    setData((prevData) => {
+      const newExperienceArray = [...values.experiences];
+
+      return {
+        ...prevData,
+        experience: newExperienceArray,
+      };
+    });
+
     localStorage.setItem("data", JSON.stringify(data));
-    console.log(values);
     navigate("/education");
   };
 
