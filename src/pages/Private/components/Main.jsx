@@ -19,13 +19,16 @@ const CustomField = ({ label, hint, ...props }) => {
 
   return (
     <div>
-      <label htmlFor={props.id || props.name} className="font-bold block mb-2">
+      <label
+        htmlFor={props.id || props.name}
+        className="font-bold block mb-2 dark:text-white"
+      >
         {label}
       </label>
       <input
         {...field}
         {...props}
-        className={`${baseStyle} ${errorStyle} ${validStyle}`}
+        className={`${baseStyle} ${errorStyle} ${validStyle} dark:bg-[#323443] dark:text-white`}
       />
       <p className={`text-sm ${messageColor}`}>{hint}</p>
       <ErrorMessage
@@ -126,7 +129,10 @@ export default function Main() {
             </div>
 
             <div className="mb-4 w-full">
-              <label htmlFor="image" className="font-bold block mb-2">
+              <label
+                htmlFor="image"
+                className="font-bold block mb-2 dark:text-white"
+              >
                 პირადი ფოტოს ატვირთვა
               </label>
               <div className="custom-file-input ">
@@ -156,14 +162,17 @@ export default function Main() {
             </div>
 
             <div className="mb-4 w-full">
-              <label htmlFor="aboutMe" className="font-bold block mb-2">
+              <label
+                htmlFor="aboutMe"
+                className="font-bold block mb-2 dark:text-white"
+              >
                 ჩემ შესახებ (არასავალდებულო)
               </label>
               <Field
                 as="textarea"
                 name="aboutMe"
                 placeholder="ზოგადი ინფო შენ შესახებ"
-                className="p-2 border border-gray-300 rounded-lg w-full"
+                className="p-2 border border-gray-300 rounded-lg w-full dark:bg-[#323443]"
               />
               <ErrorMessage
                 name="aboutMe"

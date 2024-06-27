@@ -5,8 +5,10 @@ export default function Header() {
     <header className="flex">
       <div className="flex flex-col gap-3 w-full">
         <div className="flex justify-between">
-          <h1 className="font-bold text-lg md:text-xl">პირადი ინფო</h1>
-          <p>1/3</p>
+          <h1 className="font-bold text-lg md:text-xl dark:text-white">
+            პირადი ინფო
+          </h1>
+          <p className="dark:text-white">1/3</p>
         </div>
         <Line />
       </div>
