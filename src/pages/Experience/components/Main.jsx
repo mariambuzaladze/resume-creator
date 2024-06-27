@@ -26,13 +26,16 @@ const CustomField = ({ label, hint, ...props }) => {
 
   return (
     <div>
-      <label htmlFor={props.id || props.name} className="font-bold block mb-2">
+      <label
+        htmlFor={props.id || props.name}
+        className="font-bold block mb-2 dark:text-white"
+      >
         {label}
       </label>
       <input
         {...field}
         {...props}
-        className={`${baseStyle} ${errorStyle} ${validStyle}`}
+        className={`${baseStyle} ${errorStyle} ${validStyle} dark:bg-[#323443] dark:text-white`}
       />
       <p className={`text-sm ${messageColor}`}>{hint}</p>
       <ErrorMessage
