@@ -13,7 +13,15 @@ function App() {
   const resumes = [];
   const storedData = JSON.parse(localStorage.getItem("data")) || {
     general: {},
-    experience: [],
+    experience: [
+      {
+        position: "",
+        employer: "",
+        started_at: "",
+        ended_at: "",
+        description: "",
+      },
+    ],
     education: {},
   };
   const [data, setData] = useState(storedData);
@@ -22,8 +30,22 @@ function App() {
     localStorage.setItem("data", JSON.stringify(data));
   }, [data]);
 
+  const [darkMode, setDarkMode] = useState(() => {
+    const storedMode = JSON.parse(localStorage.getItem("darkMode"));
+    return storedMode || false;
+  });
+
+  useEffect(() => {
+    localStorage.setItem("darkMode", JSON.stringify(darkMode));
+    if (darkMode) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [darkMode]);
+
   return (
-    <dataContext.Provider value={{ data, setData, resumes }}>
+    <dataContext.Provider value={{ data, setData, darkMode, setDarkMode }}>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />

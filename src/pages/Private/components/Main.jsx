@@ -7,7 +7,7 @@ import { dataContext } from "../../../App";
 
 const CustomField = ({ label, hint, ...props }) => {
   const [field, meta] = useField(props);
-  const errorStyle = meta.touched && meta.error ? "border-red-500" : "";
+  const errorStyle = meta.error ? "border-red-500" : "";
   const validStyle = meta.touched && !meta.error ? "border-green-500" : "";
   const baseStyle = "border border-gray-300 rounded-lg p-2 w-full";
 
