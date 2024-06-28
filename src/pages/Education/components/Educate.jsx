@@ -226,10 +226,9 @@ function Educate() {
                         placeholder="სასწავლებელი"
                         hint={"მინიმუმ 2 სიმბოლო"}
                       />
-                    </section
-                    
-                    <section className="flex items-start justify-between flex-col lg:flex-row lg:items-center">
+                    </section>
 
+                    <section className="flex items-start justify-between flex-col lg:flex-row lg:items-center">
                       <CustomSelect
                         label={"ხარისხი"}
                         name={`education[${index}].xarisxi`}
