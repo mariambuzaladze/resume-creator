@@ -1,13 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage, useField } from "formik";
 import * as Yup from "yup";
-import React from "react";
-import { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { dataContext } from "../../../App";
 
 const CustomField = ({ label, hint, ...props }) => {
   const [field, meta] = useField(props);
-  const errorStyle = meta.error ? "border-red-500" : "";
+  const errorStyle = meta.touched && meta.error ? "border-red-500" : "";
   const validStyle = meta.touched && !meta.error ? "border-green-500" : "";
   const baseStyle = "border border-gray-300 rounded-lg p-2 w-full";
 
@@ -59,7 +58,6 @@ export default function Main() {
 
   useEffect(() => {
     const storedData = JSON.parse(localStorage.getItem("data"));
-    console.log(storedData);
     if (storedData && storedData.general) {
       setInitialValues(storedData.general);
     }
@@ -88,16 +86,12 @@ export default function Main() {
   });
 
   const handleSubmit = (values) => {
-    setData((prevData) => {
-      const newGeneral = values;
+    setData((prevData) => ({
+      ...prevData,
+      general: values,
+    }));
 
-      return {
-        ...prevData,
-        general: newGeneral,
-      };
-    });
-
-    localStorage.setItem("data", JSON.stringify(data));
+    localStorage.setItem("data", JSON.stringify({ ...data, general: values }));
     navigate("/experience");
   };
 
@@ -135,7 +129,7 @@ export default function Main() {
               >
                 პირადი ფოტოს ატვირთვა
               </label>
-              <div className="custom-file-input ">
+              <div className="custom-file-input">
                 <input
                   id="image"
                   type="file"
