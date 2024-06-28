@@ -29,7 +29,10 @@ function Educate() {
 
     return (
       <div>
-        <label htmlFor={props.name} className="font-[500] block mb-2">
+        <label
+          htmlFor={props.name}
+          className="font-[500] block mb-2 dark:text-white"
+        >
           {label}
         </label>
         <input
@@ -62,7 +65,10 @@ function Educate() {
 
     return (
       <div>
-        <label htmlFor={props.name} className="font-[500] block mb-2">
+        <label
+          htmlFor={props.name}
+          className="font-[500] block mb-2 dark:text-white"
+        >
           {label}
         </label>
         <div className="relative">
@@ -114,7 +120,10 @@ function Educate() {
 
     return (
       <div>
-        <label htmlFor={props.name} className="font-[500] block mb-2">
+        <label
+          htmlFor={props.name}
+          className="font-[500] block mb-2 dark:text-white"
+        >
           {label}
         </label>
         <textarea
@@ -218,7 +227,8 @@ function Educate() {
                         hint={"მინიმუმ 2 სიმბოლო"}
                       />
                     </section>
-                    <section className="flex items-center justify-between">
+
+                    <section className="flex items-start justify-between flex-col lg:flex-row lg:items-center">
                       <CustomSelect
                         label={"ხარისხი"}
                         name={`education[${index}].xarisxi`}
