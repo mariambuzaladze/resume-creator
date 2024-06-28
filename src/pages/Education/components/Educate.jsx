@@ -7,25 +7,24 @@ import {
   FieldArray,
   ErrorMessage,
 } from "formik";
-import { useState } from "react";
+import { dataContext } from "../../../App";
+import { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Educate() {
-  //   const validationSchema = Yup.object().shape({
-  //     saswavlebeli: Yup.string().min(2),
-  //     xarisxi: Yup.string().required("ხარისხი სავალდებულო"),
-  //     date: Yup.date().required("დამთავრების რიცხვი სავალდებულო"),
-  //   });
+  const { data, setData } = useContext(dataContext);
+  const navigate = useNavigate();
   const CustomField = ({ label, hint, ...props }) => {
     const [field, meta] = useField(props);
     const errorStyle = meta.touched && meta.error ? "border-[#ef5050]" : "";
     const validStyle = meta.touched && !meta.error ? "border-[#98e37e]" : "";
     const baseStyle = `${props.type == "date" ? "w-[371px]" : "w-full"}
-      border focus:border-[2px] text-base text-[#000] opacity-60 focus:opacity-100 border-[#bcbcbc] rounded-[4px] px-4 py-[13px] outline-none `;
+      border focus:border-[1.5px] text-base text-[#000] opacity-60 focus:opacity-100 border-[#bcbcbc] rounded-[4px] px-4 py-[13px] outline-none `;
 
     const messageColor = !meta.touched
       ? "text-gray-500"
       : meta.error
-      ? "hidden"
+      ? "text-red-500"
       : "text-green-500";
 
     return (
@@ -53,7 +52,7 @@ function Educate() {
     const errorStyle = meta.touched && meta.error ? "border-[#ef5050]" : "";
     const validStyle = meta.touched && !meta.error ? "border-[#98e37e]" : "";
     const baseStyle =
-      "appearance-none w-[371px] focus:border-[2px] focus:opacity-100 text-base text-[#000] opacity-60 font-[400] leading-[1.31] bg-[#fff] rounded-[4px] border border-[#bcbcbc] flex items-center justify-between px-4 py-[14px] focus:outline-none";
+      "appearance-none w-[371px] focus:border-[1.5px] focus:opacity-100 text-base text-[#000] opacity-60 font-[400] leading-[1.31] bg-[#fff] rounded-[4px] border border-[#bcbcbc] flex items-center justify-between px-4 py-[14px] focus:outline-none";
 
     const messageColor = !meta.touched
       ? "text-gray-500"
@@ -105,7 +104,7 @@ function Educate() {
     const errorStyle = meta.touched && meta.error ? "border-[#ef5050]" : "";
     const validStyle = meta.touched && !meta.error ? "border-[#98e37e]" : "";
     const baseStyle =
-      "h-[180px] w-full focus:border-[2px] opacity-60 focus:opacity-100 text-base text-[#000] font-[400] leading-[1.38] bg-[#fff] rounded-[4px] border border-solid border-[#bcbcbc] pl-4 pr-[83px] py-[13px] resize-none outline-none placeholder:text-base placeholde:text-[#000] placeholder:opacity-60 placeholder:font-[400] placeholder:leading-[1.31]";
+      "h-[180px] w-full focus:border-[1.5px] opacity-60 focus:opacity-100 text-base text-[#000] font-[400] leading-[1.38] bg-[#fff] rounded-[4px] border border-solid border-[#bcbcbc] pl-4 pr-[83px] py-[13px] resize-none outline-none placeholder:text-base placeholde:text-[#000] placeholder:opacity-60 placeholder:font-[400] placeholder:leading-[1.31]";
 
     const messageColor = !meta.touched
       ? "text-gray-500"
@@ -141,7 +140,7 @@ function Educate() {
       },
     ],
   });
-
+  //   console.log(initialValues);
   const validationSchema = Yup.object().shape({
     education: Yup.array().of(
       Yup.object().shape({
@@ -155,54 +154,117 @@ function Educate() {
     ),
   });
 
+  const submitHandler = (values) => {
+    console.log(values);
+    // setData((prevData) => {
+    //   const neweducationArray = [...values.education];
+
+    //   return {
+    //     ...prevData,
+    //     education: neweducationArray,
+    //   };
+    // });
+    const { education } = values; // Destructure the 'education' array from form values
+    const inputValues = education.map((item) => ({
+      saswavlebeli: item.saswavlebeli,
+      xarisxi: item.xarisxi,
+      date: item.date,
+      description: item.description,
+    }));
+
+    console.log(inputValues);
+
+    localStorage.setItem("data", JSON.stringify(data));
+    navigate("/resume");
+  };
+
+  const handleAddNewForm = async (push, isValid, submitForm) => {
+    if (isValid) {
+      await submitForm();
+      push({
+        saswavlebeli: "",
+        xarisxi: "",
+        date: "",
+        description: "",
+      });
+    } else {
+      console.log("Form is not valid. Please correct errors.");
+    }
+  };
+
   return (
     <Formik
       initialValues={initialValues}
       enableReinitialize={true}
       validationSchema={validationSchema}
-      onSubmit={(values) => {
-        // Handle form submission logic here
-      }}
+      onSubmit={submitHandler}
     >
-      {({ values }) => (
+      {({ isValid, submitForm, values }) => (
         <Form>
           <FieldArray name="education">
             {({ insert, remove, push }) => (
-              <main className="flex flex-col gap-[31px] pb-[52px] border-b border-solid border-[#c1c1c1]">
-                <section className="gap-2 mt-[77px]">
-                  <CustomField
-                    label={"სასწავლებელი"}
-                    name={"saswavlebeli"}
-                    type="text"
-                    placeholder="სასწავლებელი"
-                    hint={"მინიმუმ 2 სიმბოლო"}
-                  />
-                </section>
-                <section className="flex items-center justify-between">
-                  <CustomSelect
-                    label={"ხარისხი"}
-                    name="xarisxi"
-                    type="select"
-                  />
-                  <CustomField
-                    label={"დამთავრების რიცხვი"}
-                    name="date"
-                    type="date"
-                    className="w-[371px]"
-                  />
-                </section>
-                <div className="flex flex-col gap-2 mt-1">
-                  <CustomTextarea
-                    label={"აღწერა"}
-                    name="description"
-                    type="text"
-                    placeholder="განათლების აღწერა"
-                  />
-                </div>
-                <button type="submit">submit</button>
+              <main>
+                {values.education.map((education, index) => (
+                  <div
+                    key={index}
+                    className="flex flex-col gap-[31px] pb-[52px] border-b border-solid border-[#c1c1c1]"
+                  >
+                    <section className="gap-2 mt-[77px]">
+                      <CustomField
+                        label={"სასწავლებელი"}
+                        name={`education[${index}].saswavlebeli`}
+                        type="text"
+                        placeholder="სასწავლებელი"
+                        hint={"მინიმუმ 2 სიმბოლო"}
+                      />
+                    </section>
+                    <section className="flex items-center justify-between">
+                      <CustomSelect
+                        label={"ხარისხი"}
+                        name={`education[${index}].xarisxi`}
+                        type="select"
+                      />
+                      <CustomField
+                        label={"დამთავრების რიცხვი"}
+                        name={`education[${index}].date`}
+                        type="date"
+                        className="w-[371px]"
+                      />
+                    </section>
+                    <div className="flex flex-col gap-2 mt-1">
+                      <CustomTextarea
+                        label={"აღწერა"}
+                        name={`education[${index}].description`}
+                        type="text"
+                        placeholder="განათლების აღწერა"
+                      />
+                    </div>
+                  </div>
+                ))}
+                <button
+                  type="button"
+                  onClick={() => handleAddNewForm(push, isValid, submitForm)}
+                  className="w-[289px] h-[48px] flex items-center justify-center rounded-[4px] bg-[#62a1eb] text-base text-[#fff] font-[400] leading-[20px] mt-[45px]"
+                >
+                  სხვა სასწავლებლის დამატება
+                </button>
               </main>
             )}
           </FieldArray>
+          <div className="flex items-center justify-between mt-[200px]">
+            <button
+              onClick={() => navigate("/experience")}
+              className="w-[113px] h-12 flex items-center justify-center rounded-[4px] bg-[#6b40e3] text-base text-[#fff] font-[500] leading-[20px] tracking-[1.28px] "
+            >
+              ᲣᲙᲐᲜ
+            </button>
+            <button
+              type="submit"
+              className="w-[151px] h-12 flex items-center justify-center rounded-[4px] bg-[#6b40e3] text-base text-[#fff] font-[500] leading-[20px] tracking-[1.28px] "
+            >
+              დასრულება
+            </button>
+          </div>
         </Form>
       )}
     </Formik>
