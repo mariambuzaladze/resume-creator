@@ -130,6 +130,8 @@ function Educate() {
       </div>
     );
   };
+
+  // values
   const [initialValues, setInitialValues] = useState({
     education: [
       {
@@ -140,7 +142,8 @@ function Educate() {
       },
     ],
   });
-  //   console.log(initialValues);
+
+  //validations for inputs
   const validationSchema = Yup.object().shape({
     education: Yup.array().of(
       Yup.object().shape({
@@ -154,17 +157,17 @@ function Educate() {
     ),
   });
 
+  // handles submit saves data and moves to resume page
   const submitHandler = (values) => {
-    console.log(values);
-    // setData((prevData) => {
-    //   const neweducationArray = [...values.education];
+    setData((prevData) => {
+      const neweducationArray = [...values.education];
 
-    //   return {
-    //     ...prevData,
-    //     education: neweducationArray,
-    //   };
-    // });
-    const { education } = values; // Destructure the 'education' array from form values
+      return {
+        ...prevData,
+        education: neweducationArray,
+      };
+    });
+    const { education } = values;
     const inputValues = education.map((item) => ({
       saswavlebeli: item.saswavlebeli,
       xarisxi: item.xarisxi,
@@ -172,15 +175,13 @@ function Educate() {
       description: item.description,
     }));
 
-    console.log(inputValues);
-
     localStorage.setItem("data", JSON.stringify(data));
     navigate("/resume");
   };
 
+  // it checks and ads new form
   const handleAddNewForm = async (push, isValid, submitForm) => {
     if (isValid) {
-      await submitForm();
       push({
         saswavlebeli: "",
         xarisxi: "",
@@ -191,7 +192,6 @@ function Educate() {
       console.log("Form is not valid. Please correct errors.");
     }
   };
-
   return (
     <Formik
       initialValues={initialValues}
