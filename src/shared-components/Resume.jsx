@@ -7,7 +7,13 @@ function Resume() {
   return (
     <main className="w-[822px] bg-[#fff] flex flex-col justify-between px-20 py-[44px]">
       <div className="flex flex-col gap-6">
-        <section className="flex justify-between pb-[18px] border-b border-solid border-[#c8c8c8]">
+        <section
+          className={`${
+            context.data.general.aboutMe
+              ? "border-b border-solid border-[#c8c8c8]"
+              : ""
+          } flex justify-between pb-[18px]`}
+        >
           <aside className="flex flex-col gap-[34px] mt-6">
             <div className="flex flex-col gap-[17px]">
               <p className="max-w-[400px] h-[42px] flex items-center gap-5 text-[34px] text-[#f93b1d] font-[700] leading-[42px]">
@@ -72,21 +78,34 @@ function Resume() {
             } w-[246] h-[246px] rounded-[133px]`}
           />
         </section>
-        <section>
-          <h2>ᲒᲐᲛᲝᲪᲓᲘᲚᲔᲑᲐ</h2>
+        <section
+          className={`${
+            context.data.experience[context.data.experience.length - 1]
+              .description
+              ? "border-b border-solid border-[#c8c8c8]"
+              : ""
+          } flex flex-col gap-6 pb-[31px]`}
+        >
+          <h2 className="h-[22px] text-lg text-[#f93b1d] font-[700] leading-[22px] mb-[-9px]">
+            ᲒᲐᲛᲝᲪᲓᲘᲚᲔᲑᲐ
+          </h2>
           {context.data.experience.map((e, index) => {
             return (
-              <div key={index}>
-                <p>
-                  {e.position ? e.position : ""}{" "}
-                  <span>{e.employer ? `, ${e.employer}` : ""}</span>
+              <div key={index} className="flex flex-col gap-4">
+                <div className="flex flex-col gap-[7px]">
+                  <p className="h-5 text-base text-[#1a1a1a] font-[500] leading-[20px] ">
+                    {e.position ? e.position : ""}{" "}
+                    <span>{e.employer ? `, ${e.employer}` : ""}</span>
+                  </p>
+                  <p className="h-[19px] text-base text-[#909090] font-[400] leading-[19px] italic">
+                    <span>{e.started_at ? e.started_at : ""}</span>
+                    <span>{e.started_at || e.ended_at ? " - " : ""}</span>
+                    <span>{e.ended_at ? e.ended_at : ""}</span>
+                  </p>
+                </div>
+                <p className="text-base text-[#000] font-[400] leading-[1.38]">
+                  {e.description ? e.description : ""}
                 </p>
-                <p>
-                  <span>{e.started_at ? e.started_at : ""}</span>
-                  <span>{e.started_at || e.ended_at ? " - " : ""}</span>
-                  <span>{e.ended_at ? e.ended_at : ""}</span>
-                </p>
-                <p>{e.description ? e.description : ""}</p>
               </div>
             );
           })}
