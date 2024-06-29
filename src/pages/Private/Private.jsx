@@ -1,6 +1,7 @@
 import Header from "./components/Header";
 import GoBack from "../../shared-components/GoBack";
 import Main from "./components/Main";
+import Resume from "../../shared-components/Resume";
 
 export default function Private() {
   return (
@@ -9,6 +10,7 @@ export default function Private() {
       <div className="flex flex-col gap-4 w-full mr-6 md:gap-8">
         <Header />
         <Main />
+        <Resume />
       </div>
     </div>
   );

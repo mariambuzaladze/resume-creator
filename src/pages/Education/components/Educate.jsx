@@ -24,9 +24,12 @@ function Educate() {
     const messageColor = !meta.touched
       ? "text-gray-500"
       : meta.error
-      ? "text-red-500"
+      ? "hidden"
       : "text-green-500";
-
+    const onchange = (props) => (e) => {
+      console.log(e.target.value);
+      console.log(props);
+    };
     return (
       <div>
         <label htmlFor={props.name} className="font-[500] block mb-2">
@@ -36,6 +39,8 @@ function Educate() {
           {...field}
           {...props}
           className={`${baseStyle} ${errorStyle} ${validStyle}`}
+          onChange={onchange(props)}
+          value={e.target.value}
         />
         <p className={`text-sm ${messageColor}`}>{hint}</p>
         <ErrorMessage
@@ -218,7 +223,7 @@ function Educate() {
                         hint={"მინიმუმ 2 სიმბოლო"}
                       />
                     </section>
-                    <section className="flex items-center justify-between">
+                    <section className="flex gap-[60px] items-center justify-between">
                       <CustomSelect
                         label={"ხარისხი"}
                         name={`education[${index}].xarisxi`}
