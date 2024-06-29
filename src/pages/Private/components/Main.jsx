@@ -17,20 +17,12 @@ const CustomField = ({ label, hint, ...props }) => {
   const validStyle = meta.touched && !meta.error ? "border-green-500" : "";
   const baseStyle = "border border-gray-300 rounded-lg p-2 w-full";
 
-  const messageColor = !field.value
-    ? "text-gray-500"
-    : meta.error
-    ? "hidden"
-    : !field.value && meta.touched
-    ? "hidden"
-    : "text-green-500";
-
-  // const messageColor =
-  //   meta.error && field.value
-  //     ? "hidden"
-  //     : field.value && meta.touched
-  //     ? "text-green-500"
-  //     : "text-gray-500";
+  const messageColor =
+    meta.error && field.value
+      ? "hidden"
+      : field.value && !meta.error
+      ? "text-green-500"
+      : "text-gray-500";
 
   return (
     <div>
@@ -165,17 +157,30 @@ export default function Main() {
                   accept="image/*"
                   name="image"
                   onChange={(event) => {
-                    setFieldValue("image", event.currentTarget.files[0]);
+                    console.log("ss");
+                    const file = event.currentTarget.files[0];
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+                      const base64String = reader.result;
+                      setFieldValue("image", base64String);
 
-                    setData((prevData) => {
-                      return {
+                      setData((prevData) => ({
                         ...prevData,
                         general: {
                           ...prevData.general,
-                          ["image"]: event.target.value,
+                          image: base64String,
                         },
-                      };
-                    });
+                      }));
+
+                      localStorage.setItem(
+                        "data",
+                        JSON.stringify({
+                          ...data,
+                          general: { ...data.general, image: base64String },
+                        })
+                      );
+                    };
+                    reader.readAsDataURL(file);
                   }}
                   className="hidden"
                 />
