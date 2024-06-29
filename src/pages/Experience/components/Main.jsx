@@ -23,7 +23,7 @@ const CustomField = ({ label, hint, ...props }) => {
   const messageColor =
     meta.error && field.value
       ? "hidden"
-      : field.value && meta.touched
+      : field.value && !meta.error
       ? "text-green-500"
       : "text-gray-500";
 
