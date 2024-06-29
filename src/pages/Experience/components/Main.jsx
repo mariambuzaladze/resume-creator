@@ -13,16 +13,19 @@ import { useContext, useEffect, useState } from "react";
 import { dataContext } from "../../../App";
 
 const CustomField = ({ label, hint, ...props }) => {
+  const { data, setData } = useContext(dataContext);
+
   const [field, meta] = useField(props);
   const errorStyle = meta.touched && meta.error ? "border-red-500" : "";
   const validStyle = meta.touched && !meta.error ? "border-green-500" : "";
   const baseStyle = "border border-gray-300 rounded-lg p-2 w-full";
 
-  const messageColor = !meta.touched
-    ? "text-gray-500"
-    : meta.error
-    ? "hidden"
-    : "text-green-500";
+  const messageColor =
+    meta.error && field.value
+      ? "hidden"
+      : field.value && meta.touched
+      ? "text-green-500"
+      : "text-gray-500";
 
   return (
     <div>
@@ -35,14 +38,38 @@ const CustomField = ({ label, hint, ...props }) => {
       <input
         {...field}
         {...props}
+        onChange={(event) => {
+          field.onChange(event);
+
+          setData((prevData) => {
+            const updatedExperiences = prevData.experience.map((item, idx) => {
+              if (idx === props.index) {
+                return {
+                  ...item,
+                  [props.name.split(".")[2]]: event.target.value,
+                };
+              }
+              return item;
+            });
+
+            if (props.index === prevData.experience.length) {
+              updatedExperiences.push({
+                [props.name.split(".")[2]]: event.target.value,
+              });
+            }
+
+            return {
+              ...prevData,
+              experience: updatedExperiences,
+            };
+          });
+        }}
         className={`${baseStyle} ${errorStyle} ${validStyle} dark:bg-[#323443] dark:text-white`}
       />
       <p className={`text-sm ${messageColor}`}>{hint}</p>
-      <ErrorMessage
-        name={props.name}
-        component="p"
-        className="text-red-500 text-sm"
-      />
+      {meta.error && field.value ? (
+        <p className="text-red-500 text-sm">{meta.error}</p>
+      ) : null}
     </div>
   );
 };
@@ -85,6 +112,16 @@ export default function Main() {
     ),
   });
 
+  const handlePush = (push) => {
+    push({
+      position: "",
+      employer: "",
+      started_at: "",
+      ended_at: "",
+      description: "",
+    });
+  };
+
   const handleSubmit = (values) => {
     setData((prevData) => {
       const newExperienceArray = [...values.experiences];
@@ -106,6 +143,8 @@ export default function Main() {
         enableReinitialize={true}
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
+        validateOnChange={true}
+        validateOnBlur={false}
       >
         {({ values }) => (
           <Form className="flex flex-col min-h-screen gap-4 md:gap-8">
@@ -121,6 +160,7 @@ export default function Main() {
                           type="text"
                           placeholder="დეველოპერი, დიზაინერი, ა.შ."
                           hint="მინიმუმ 2 სიმბოლო"
+                          index={index}
                         />
                         <CustomField
                           label="დამსაქმებელი"
@@ -128,6 +168,7 @@ export default function Main() {
                           type="text"
                           placeholder="დამსაქმებელი"
                           hint="მინიმუმ 2 სიმბოლო"
+                          index={index}
                         />
                         <div className="flex flex-col md:flex-row justify-between w-full">
                           <CustomField
@@ -135,12 +176,14 @@ export default function Main() {
                             name={`experiences.${index}.started_at`}
                             type="date"
                             hint="სავალდებულოა"
+                            index={index}
                           />
                           <CustomField
                             label="დამთავრების რიცხვი"
                             name={`experiences.${index}.ended_at`}
                             type="date"
                             hint="სავალდებულოა"
+                            index={index}
                           />
                         </div>
                         <CustomField
@@ -149,6 +192,7 @@ export default function Main() {
                           type="textarea"
                           placeholder="როლი თანამდებობაზე და ზოგადი აღწერა"
                           hint="სავალდებულოა"
+                          index={index}
                         />
                         <Line />
                       </div>
@@ -156,15 +200,7 @@ export default function Main() {
                   <button
                     type="button"
                     className="text-white bg-[#62A1EB] rounded-sm pt-1 pb-1 p-4 self-start"
-                    onClick={() =>
-                      push({
-                        position: "",
-                        employer: "",
-                        started_at: "",
-                        ended_at: "",
-                        description: "",
-                      })
-                    }
+                    onClick={() => handlePush(push)}
                   >
                     მეტი გამოცდილების დამატება
                   </button>
