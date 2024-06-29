@@ -91,6 +91,19 @@ export default function Main() {
 
   useEffect(() => {
     const storedData = JSON.parse(localStorage.getItem("data"));
+    const { general } = storedData;
+
+    if (
+      !general ||
+      !general.name ||
+      !general.surname ||
+      !general.image ||
+      !general.email ||
+      !general.number
+    ) {
+      navigate("/private");
+    }
+
     if (storedData && storedData.experience) {
       setInitialValues({ experiences: storedData.experience });
     }
