@@ -25,7 +25,7 @@ function App() {
     education: [],
   };
   const [data, setData] = useState(storedData);
-
+  console.log(data);
   useEffect(() => {
     localStorage.setItem("data", JSON.stringify(data));
   }, [data]);
