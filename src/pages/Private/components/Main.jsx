@@ -5,16 +5,25 @@ import React, { useContext, useState, useEffect } from "react";
 import { dataContext } from "../../../App";
 
 const CustomField = ({ label, hint, ...props }) => {
+  const { data, setData } = useContext(dataContext);
+
   const [field, meta] = useField(props);
   const errorStyle = meta.touched && meta.error ? "border-red-500" : "";
   const validStyle = meta.touched && !meta.error ? "border-green-500" : "";
   const baseStyle = "border border-gray-300 rounded-lg p-2 w-full";
 
-  const messageColor = !meta.touched
-    ? "text-gray-500"
-    : meta.error
-    ? "hidden"
-    : "text-green-500";
+  // const messageColor = !field.value
+  //   ? "text-gray-500"
+  //   : meta.error
+  //   ? "hidden"
+  //   : "text-green-500";
+
+  const messageColor =
+    meta.error && field.value
+      ? "hidden"
+      : field.value && meta.touched
+      ? "text-green-500"
+      : "text-gray-500";
 
   return (
     <div>
@@ -28,13 +37,24 @@ const CustomField = ({ label, hint, ...props }) => {
         {...field}
         {...props}
         className={`${baseStyle} ${errorStyle} ${validStyle} dark:bg-[#323443] dark:text-white`}
+        onChange={(event) => {
+          field.onChange(event);
+
+          setData((prevData) => {
+            return {
+              ...prevData,
+              general: {
+                ...prevData.general,
+                [props.name]: event.target.value,
+              },
+            };
+          });
+        }}
       />
       <p className={`text-sm ${messageColor}`}>{hint}</p>
-      <ErrorMessage
-        name={props.name}
-        component="p"
-        className="text-red-500 text-sm"
-      />
+      {meta.error && field.value ? (
+        <p className="text-red-500 text-sm">{meta.error}</p>
+      ) : null}
     </div>
   );
 };
@@ -102,6 +122,8 @@ export default function Main() {
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
         enableReinitialize
+        validateOnChange={true}
+        validateOnBlur={false}
       >
         {({ errors, touched, setFieldValue }) => (
           <Form className="flex flex-col justify-center min-h-screen gap-4 md:gap-6">
@@ -137,6 +159,16 @@ export default function Main() {
                   name="image"
                   onChange={(event) => {
                     setFieldValue("image", event.currentTarget.files[0]);
+
+                    setData((prevData) => {
+                      return {
+                        ...prevData,
+                        general: {
+                          ...prevData.general,
+                          ["image"]: event.target.value,
+                        },
+                      };
+                    });
                   }}
                   className="hidden"
                 />
@@ -167,7 +199,19 @@ export default function Main() {
                 name="aboutMe"
                 placeholder="ზოგადი ინფო შენ შესახებ"
                 className="p-2 border border-gray-300 rounded-lg w-full dark:bg-[#323443]"
+                onChange={(event) => {
+                  setData((prevData) => {
+                    return {
+                      ...prevData,
+                      general: {
+                        ...prevData.general,
+                        ["aboutMe"]: event.target.value,
+                      },
+                    };
+                  });
+                }}
               />
+
               <ErrorMessage
                 name="aboutMe"
                 component="p"
