@@ -17,20 +17,12 @@ const CustomField = ({ label, hint, ...props }) => {
   const validStyle = meta.touched && !meta.error ? "border-green-500" : "";
   const baseStyle = "border border-gray-300 rounded-lg p-2 w-full";
 
-  const messageColor = !field.value
-    ? "text-gray-500"
-    : meta.error
-    ? "hidden"
-    : !field.value && meta.touched
-    ? "hidden"
-    : "text-green-500";
-
-  // const messageColor =
-  //   meta.error && field.value
-  //     ? "hidden"
-  //     : field.value && meta.touched
-  //     ? "text-green-500"
-  //     : "text-gray-500";
+  const messageColor =
+    meta.error && field.value
+      ? "hidden"
+      : field.value && !meta.error
+      ? "text-green-500"
+      : "text-gray-500";
 
   return (
     <div>
