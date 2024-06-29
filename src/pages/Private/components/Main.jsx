@@ -124,7 +124,7 @@ export default function Main() {
         validateOnChange={true}
         validateOnBlur={false}
       >
-        {({ errors, touched, setFieldValue }) => (
+        {({ errors, touched, setFieldValue, handleChange }) => (
           <Form className="flex flex-col justify-center min-h-screen gap-4 md:gap-6">
             <div className="flex flex-col md:flex-row justify-between w-full">
               <CustomField
@@ -157,17 +157,29 @@ export default function Main() {
                   accept="image/*"
                   name="image"
                   onChange={(event) => {
-                    setFieldValue("image", event.currentTarget.files[0]);
+                    const file = event.currentTarget.files[0];
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+                      const base64String = reader.result;
+                      setFieldValue("image", base64String);
 
-                    setData((prevData) => {
-                      return {
+                      setData((prevData) => ({
                         ...prevData,
                         general: {
                           ...prevData.general,
-                          ["image"]: event.target.value,
+                          image: base64String,
                         },
-                      };
-                    });
+                      }));
+
+                      localStorage.setItem(
+                        "data",
+                        JSON.stringify({
+                          ...data,
+                          general: { ...data.general, image: base64String },
+                        })
+                      );
+                    };
+                    reader.readAsDataURL(file);
                   }}
                   className="hidden"
                 />
@@ -199,15 +211,14 @@ export default function Main() {
                 placeholder="ზოგადი ინფო შენ შესახებ"
                 className="p-2 border border-gray-300 rounded-lg w-full dark:bg-[#323443]"
                 onChange={(event) => {
-                  setData((prevData) => {
-                    return {
-                      ...prevData,
-                      general: {
-                        ...prevData.general,
-                        ["aboutMe"]: event.target.value,
-                      },
-                    };
-                  });
+                  handleChange(event);
+                  setData((prevData) => ({
+                    ...prevData,
+                    general: {
+                      ...prevData.general,
+                      aboutMe: event.target.value,
+                    },
+                  }));
                 }}
               />
 

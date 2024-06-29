@@ -24,7 +24,7 @@ function Educate() {
     const messageColor = !meta.touched
       ? "text-gray-500"
       : meta.error
-      ? "text-red-500"
+      ? "hidden"
       : "text-green-500";
 
     return (
@@ -80,15 +80,21 @@ function Educate() {
             <option value="" className="" hidden selected>
               აირჩიეთ ხარისხი
             </option>
-            <option value="option1">საშუალო სკოლის დიპლომი</option>
-            <option value="option2">ზოგადსაგანმანათლებლო დიპლომი</option>
-            <option value="option3">ბაკალავრი</option>
-            <option value="option4">მაგისტრი</option>
-            <option value="option5">დოქტორი</option>
-            <option value="option6">ასოცირებული ხარისხი</option>
-            <option value="option7">სტუდენტი</option>
-            <option value="option8">კოლეჯი (ხარისხის გარეშე)</option>
-            <option value="option9">სხვა</option>
+            <option value="საშუალო სკოლის დიპლომი">
+              საშუალო სკოლის დიპლომი
+            </option>
+            <option value="ზოგადსაგანმანათლებლო დიპლომი">
+              ზოგადსაგანმანათლებლო დიპლომი
+            </option>
+            <option value="ბაკალავრი">ბაკალავრი</option>
+            <option value="მაგისტრი">მაგისტრი</option>
+            <option value="დოქტორი">დოქტორი</option>
+            <option value="ასოცირებული ხარისხი">ასოცირებული ხარისხი</option>
+            <option value="სტუდენტი">სტუდენტი</option>
+            <option value="კოლეჯი (ხარისხის გარეშე)">
+              კოლეჯი (ხარისხის გარეშე)
+            </option>
+            <option value="სხვა">სხვა</option>
           </select>
           <img
             src="/public/icon-arrow-down.svg"
@@ -144,9 +150,9 @@ function Educate() {
   const [initialValues, setInitialValues] = useState({
     education: [
       {
-        saswavlebeli: "",
-        xarisxi: "",
-        date: "",
+        school: "",
+        degree: "",
+        graduation_date: "",
         description: "",
       },
     ],
@@ -156,11 +162,11 @@ function Educate() {
   const validationSchema = Yup.object().shape({
     education: Yup.array().of(
       Yup.object().shape({
-        saswavlebeli: Yup.string()
+        school: Yup.string()
           .min(2, "მინიმუმ 2 სიმბოლო")
           .required("სავალდებულოა"),
-        xarisxi: Yup.string().required("სავალდებულოა"),
-        date: Yup.date().required("სავალდებულოა"),
+        degree: Yup.string().required("სავალდებულოა"),
+        graduation_date: Yup.date().required("სავალდებულოა"),
         description: Yup.string().required("სავალდებულოა"),
       })
     ),
@@ -176,11 +182,13 @@ function Educate() {
         education: neweducationArray,
       };
     });
+
+    /// helps to validate form before adds new
     const { education } = values;
     const inputValues = education.map((item) => ({
-      saswavlebeli: item.saswavlebeli,
-      xarisxi: item.xarisxi,
-      date: item.date,
+      school: item.school,
+      degree: item.degree,
+      graduation_date: item.graduation_date,
       description: item.description,
     }));
 
@@ -192,9 +200,9 @@ function Educate() {
   const handleAddNewForm = async (push, isValid, submitForm) => {
     if (isValid) {
       push({
-        saswavlebeli: "",
-        xarisxi: "",
-        date: "",
+        school: "",
+        degree: "",
+        graduation_date: "",
         description: "",
       });
     } else {
@@ -221,22 +229,22 @@ function Educate() {
                     <section className="gap-2 mt-[77px]">
                       <CustomField
                         label={"სასწავლებელი"}
-                        name={`education[${index}].saswavlebeli`}
+                        name={`education[${index}].school`}
                         type="text"
                         placeholder="სასწავლებელი"
                         hint={"მინიმუმ 2 სიმბოლო"}
                       />
                     </section>
 
-                    <section className="flex items-start justify-between flex-col lg:flex-row lg:items-center">
+                    <section className="flex items-start justify-between flex-col lg:flex-row lg:items-center lg:gap-[60px]">
                       <CustomSelect
                         label={"ხარისხი"}
-                        name={`education[${index}].xarisxi`}
+                        name={`education[${index}].degree`}
                         type="select"
                       />
                       <CustomField
                         label={"დამთავრების რიცხვი"}
-                        name={`education[${index}].date`}
+                        name={`education[${index}].graduation_date`}
                         type="date"
                         className="w-[371px]"
                       />
