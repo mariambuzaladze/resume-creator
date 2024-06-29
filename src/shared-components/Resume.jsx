@@ -19,13 +19,19 @@ function Resume() {
             </p>
             <div>
               <div>
-                <img src="" alt="" />
+                <img
+                  src={context.data.general.email ? "/email.png" : ""}
+                  alt="email"
+                />
                 <span>
                   {context.data.general.email ? context.data.general.email : ""}
                 </span>
               </div>
               <div>
-                <img src="" alt="" />
+                <img
+                  src={context.data.general.number ? "/phone.png" : ""}
+                  alt="phone"
+                />
                 <span>
                   {context.data.general.number
                     ? context.data.general.number
@@ -46,6 +52,7 @@ function Resume() {
           alt="avatar"
         />
       </section>
+      <img src="/redberryMiniLogo.png" alt="logo" />
     </main>
   );
 }
