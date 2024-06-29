@@ -157,17 +157,30 @@ export default function Main() {
                   accept="image/*"
                   name="image"
                   onChange={(event) => {
-                    setFieldValue("image", event.currentTarget.files[0]);
+                    console.log("ss");
+                    const file = event.currentTarget.files[0];
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+                      const base64String = reader.result;
+                      setFieldValue("image", base64String);
 
-                    setData((prevData) => {
-                      return {
+                      setData((prevData) => ({
                         ...prevData,
                         general: {
                           ...prevData.general,
-                          ["image"]: event.target.value,
+                          image: base64String,
                         },
-                      };
-                    });
+                      }));
+
+                      localStorage.setItem(
+                        "data",
+                        JSON.stringify({
+                          ...data,
+                          general: { ...data.general, image: base64String },
+                        })
+                      );
+                    };
+                    reader.readAsDataURL(file);
                   }}
                   className="hidden"
                 />

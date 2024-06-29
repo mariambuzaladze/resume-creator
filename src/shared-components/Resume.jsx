@@ -52,7 +52,7 @@ function Resume() {
           </div>
         </aside>
         <img
-          //   src={context.data.general.image ? context.data.general.image : ""}
+          src={context.data.general.image ? context.data.general.image : ""}
           alt="avatar"
           className="w-[246] h-[246px] rounded-[133px]"
         />
