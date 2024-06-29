@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import Educate from "./components/Educate";
 import GoBack from "../../shared-components/GoBack";
+import Resume from "../../shared-components/Resume";
 
 function Education() {
   return (
@@ -8,8 +9,8 @@ function Education() {
       <div className="absolute top-[45px] left-[48px]">
         <GoBack />
       </div>
-      <section className="min-h-svh flex flex-col justify-between px-[150px] pt-[47px] pb-[65px]">
-        <div>
+      <section className="min-h-svh flex">
+        <div className="px-[150px] pt-[47px] pb-[65px]">
           <header className="flex justify-between items-center pb-[11px] border-b-[2px] border-solid border-[#1a1a1a] dark:border-white">
             <h1 className="text-2xl text-[#1a1a1a] font-[700] dark:text-white">
               ᲒᲐᲜᲐᲗᲚᲔᲑᲐ
@@ -20,6 +21,7 @@ function Education() {
           </header>
           <Educate />
         </div>
+        <Resume />
       </section>
     </main>
   );
