@@ -16,7 +16,7 @@ function Educate() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const { general, experience } = data;
+    const { general, experience } = context.data;
 
     if (
       !general ||

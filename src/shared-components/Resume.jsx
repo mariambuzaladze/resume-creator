@@ -5,7 +5,7 @@ function Resume() {
   const context = useContext(dataContext);
 
   return (
-    <main className="w-[822px] bg-[#fff] flex flex-col justify-between px-20 py-[44px]">
+    <main className="w-[822px] h-full bg-[#fff] flex flex-col justify-between px-20 py-[44px]">
       <div className="flex flex-col gap-6">
         <section
           className={`${
