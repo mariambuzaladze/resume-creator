@@ -16,7 +16,7 @@ function Resume() {
         >
           <aside className="flex flex-col gap-[34px] mt-6">
             <div className="flex flex-col gap-[17px]">
-              <p className="max-w-[400px] h-[42px] flex items-center gap-5 text-[34px] text-[#f93b1d] font-[700] leading-[42px]">
+              <p className="max-w-[400px] wrap h-[42px] flex items-center gap-5 text-[34px] text-[#f93b1d] font-[700] leading-[42px]">
                 {context.data.general.name ? context.data.general.name : ""}
                 <span>
                   {context.data.general.surname
@@ -33,11 +33,11 @@ function Resume() {
                       context.data.general.email ? "flex" : "hidden"
                     } w-5 h-5`}
                   />
-                  <span className="max-w-[300px] text-lg text-[#1a1a1a] dark:text-[#fff] font-[400] leading-[21px]">
+                  <p className="w-[300px] text-lg text-[#1a1a1a] dark:text-[#fff] font-[400] leading-[21px]">
                     {context.data.general.email
                       ? context.data.general.email
                       : ""}
-                  </span>
+                  </p>
                 </div>
                 <div className="h-[21px] flex items-center gap-[10px]">
                   <img
@@ -47,11 +47,11 @@ function Resume() {
                       context.data.general.number ? "flex" : "hidden"
                     } w-5 h-5`}
                   />
-                  <span className="max-w-[300px] text-lg text-[#1a1a1a] dark:text-[#fff] font-[400] leading-[21px]">
+                  <p className="w-[300px] text-lg text-[#1a1a1a] dark:text-[#fff] font-[400] leading-[21px]">
                     {context.data.general.number
                       ? context.data.general.number
                       : ""}
-                  </span>
+                  </p>
                 </div>
               </div>
             </div>
@@ -89,11 +89,11 @@ function Resume() {
           <h2
             className={`${
               context.data.general.aboutMe &&
-              (context.data.experience.position ||
-                context.data.experience.employer ||
-                context.data.experience.started_at ||
-                context.data.experience.ended_at ||
-                context.data.experience.description)
+              (context.data.experience[0].position ||
+                context.data.experience[0].employer ||
+                context.data.experience[0].started_at ||
+                context.data.experience[0].ended_at ||
+                context.data.experience[0].description)
                 ? "flex"
                 : "hidden"
             } h-[22px] text-lg text-[#f93b1d] dark:text-[#f7391c] font-[700] leading-[22px] mb-[-9px]`}
@@ -124,11 +124,11 @@ function Resume() {
         <section className="flex flex-col gap-4">
           <h2
             className={`${
-              context.data.experience.description &&
-              (context.data.education.school ||
-                context.data.education.degree ||
-                context.data.education.graduation_date ||
-                context.data.education.description)
+              context.data.experience[0].description &&
+              (context.data.education[0].school ||
+                context.data.education[0].degree ||
+                context.data.education[0].graduation_date ||
+                context.data.education[0].description)
                 ? "flex"
                 : "hidden"
             } h-[22px] text-lg text-[#f93b1d] dark:text-[#f7391c] font-[700] leading-[22px] `}
