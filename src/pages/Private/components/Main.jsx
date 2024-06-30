@@ -20,7 +20,7 @@ const CustomField = ({ label, hint, ...props }) => {
   const messageColor =
     meta.error && field.value
       ? "hidden"
-      : field.value && !meta.error
+      : meta.touched && !meta.error
       ? "text-green-500"
       : "text-gray-500";
 
@@ -209,7 +209,7 @@ export default function Main() {
                 as="textarea"
                 name="aboutMe"
                 placeholder="ზოგადი ინფო შენ შესახებ"
-                className="p-2 border border-gray-300 rounded-lg w-full dark:bg-[#323443]"
+                className="p-2 border border-gray-300 rounded-lg w-full dark:bg-[#323443] dark:text-white"
                 onChange={(event) => {
                   handleChange(event);
                   setData((prevData) => ({

@@ -11,7 +11,10 @@ export default function Experience() {
         <GoBack />
       </div>
       <div className="flex justify-between">
-        <div className="flex flex-col gap-4 w-full md:gap-8 px-[150px] pt-[47px]">
+        <div
+          className="flex flex-col gap-4 w-full md:gap-8 px-[150px] pt-[47px]"
+          style={{ maxWidth: "50%" }}
+        >
           <Header />
           <Main />
         </div>
