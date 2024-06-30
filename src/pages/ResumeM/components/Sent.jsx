@@ -1,11 +1,17 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function Sent() {
-  const [useSend, setUseSend] = useState(true);
-
+  const [useSend, setUseSend] = useState(() => {
+    return localStorage.getItem("useSend") === "true" || false;
+  });
+  console.log(localStorage.getItem("useSend"));
   const handleClose = () => {
     setUseSend(false);
   };
+
+  useEffect(() => {
+    localStorage.setItem("useSend", useSend);
+  }, [useSend]);
 
   return (
     <div
