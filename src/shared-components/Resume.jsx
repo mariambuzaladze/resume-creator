@@ -63,7 +63,7 @@ function Resume() {
               >
                 ᲩᲔᲛ ᲨᲔᲡᲐᲮᲔᲑ
               </h2>
-              <p className="max-w-[432px] text-base text-[#000] font-[400] leading-[1.38]">
+              <p className="h-5 max-w-[432px] text-base text-[#000] font-[400] leading-[1.38]">
                 {context.data.general.aboutMe
                   ? context.data.general.aboutMe
                   : ""}
@@ -86,7 +86,18 @@ function Resume() {
               : ""
           } flex flex-col gap-6 pb-[31px]`}
         >
-          <h2 className="h-[22px] text-lg text-[#f93b1d] font-[700] leading-[22px] mb-[-9px]">
+          <h2
+            className={`${
+              context.data.general.aboutMe &&
+              (context.data.experience.position ||
+                context.data.experience.employer ||
+                context.data.experience.started_at ||
+                context.data.experience.ended_at ||
+                context.data.experience.description)
+                ? "flex"
+                : "hidden"
+            } h-[22px] text-lg text-[#f93b1d] font-[700] leading-[22px] mb-[-9px]`}
+          >
             ᲒᲐᲛᲝᲪᲓᲘᲚᲔᲑᲐ
           </h2>
           {context.data.experience.map((e, index) => {
@@ -113,13 +124,14 @@ function Resume() {
         <section className="flex flex-col gap-4">
           <h2
             className={`${
-              context.data.education.school ||
-              context.data.education.degree ||
-              context.data.education.graduation_date ||
-              context.data.education.description
+              context.data.experience.description &&
+              (context.data.education.school ||
+                context.data.education.degree ||
+                context.data.education.graduation_date ||
+                context.data.education.description)
                 ? "flex"
-                : ""
-            }h-[22px] text-lg text-[#f93b1d] font-[700] leading-[22px] `}
+                : "hidden"
+            } h-[22px] text-lg text-[#f93b1d] font-[700] leading-[22px] `}
           >
             ᲒᲐᲜᲐᲗᲚᲔᲑᲐ
           </h2>
