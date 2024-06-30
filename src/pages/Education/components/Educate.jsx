@@ -8,12 +8,13 @@ import {
   ErrorMessage,
 } from "formik";
 import { dataContext } from "../../../App";
-import { useState, useContext } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 function Educate() {
-  const { data, setData } = useContext(dataContext);
+  const context = useContext(dataContext);
   const navigate = useNavigate();
+
   const CustomField = ({ label, hint, ...props }) => {
     const [field, meta] = useField(props);
     const errorStyle = meta.touched && meta.error ? "border-[#ef5050]" : "";
@@ -39,6 +40,34 @@ function Educate() {
           {...field}
           {...props}
           className={`${baseStyle} ${errorStyle} ${validStyle}`}
+          onChange={(event) => {
+            field.onChange(event);
+
+            context.setData((prevData) => {
+              const updatedEducation = prevData.education.map((item, idx) => {
+                if (idx === props.index) {
+                  console.log([props.name.split(".")[1]]);
+                  return {
+                    ...item,
+                    [props.name.split(".")[1]]: event.target.value,
+                  };
+                }
+                return item;
+              });
+              console.log(updatedEducation);
+
+              if (props.index === prevData.education.length) {
+                updatedEducation.push({
+                  [props.name.split(".")[1]]: event.target.value,
+                });
+              }
+
+              return {
+                ...prevData,
+                education: updatedEducation,
+              };
+            });
+          }}
         />
         <p className={`text-sm ${messageColor}`}>{hint}</p>
         <ErrorMessage
@@ -49,7 +78,7 @@ function Educate() {
       </div>
     );
   };
-  //
+
   const CustomSelect = ({ label, hint, ...props }) => {
     const [field, meta] = useField(props);
     const errorStyle = meta.touched && meta.error ? "border-[#ef5050]" : "";
@@ -76,6 +105,27 @@ function Educate() {
             {...field}
             {...props}
             className={`${baseStyle} ${errorStyle} ${validStyle}`}
+            onChange={(event) => {
+              field.onChange(event);
+
+              context.setData((prevData) => {
+                const updatedEducation = prevData.education.map((item, idx) => {
+                  if (idx === props.index) {
+                    console.log([props.name.split(".")[1]]);
+                    return {
+                      ...item,
+                      [props.name.split(".")[1]]: event.target.value,
+                    };
+                  }
+                  return item;
+                });
+
+                return {
+                  ...prevData,
+                  education: updatedEducation,
+                };
+              });
+            }}
           >
             <option value="" className="" hidden selected>
               აირჩიეთ ხარისხი
@@ -136,6 +186,27 @@ function Educate() {
           {...field}
           {...props}
           className={`${baseStyle} ${errorStyle} ${validStyle}`}
+          onChange={(event) => {
+            field.onChange(event);
+
+            context.setData((prevData) => {
+              const updatedEducation = prevData.education.map((item, idx) => {
+                if (idx === props.index) {
+                  console.log([props.name.split(".")[1]]);
+                  return {
+                    ...item,
+                    [props.name.split(".")[1]]: event.target.value,
+                  };
+                }
+                return item;
+              });
+
+              return {
+                ...prevData,
+                education: updatedEducation,
+              };
+            });
+          }}
         ></textarea>
         <ErrorMessage
           name={props.name}
@@ -157,6 +228,14 @@ function Educate() {
       },
     ],
   });
+
+  // localstorage
+  useEffect(() => {
+    const storedData = JSON.parse(localStorage.getItem("data"));
+    if (storedData && storedData.education) {
+      setInitialValues({ education: storedData.education });
+    }
+  }, []);
 
   //validations for inputs
   const validationSchema = Yup.object().shape({
@@ -228,6 +307,7 @@ function Educate() {
                   >
                     <section className="gap-2 mt-[77px]">
                       <CustomField
+                        index={index}
                         label={"სასწავლებელი"}
                         name={`education[${index}].school`}
                         type="text"
@@ -238,11 +318,13 @@ function Educate() {
 
                     <section className="flex items-start justify-between flex-col lg:flex-row lg:items-center lg:gap-[60px]">
                       <CustomSelect
+                        index={index}
                         label={"ხარისხი"}
                         name={`education[${index}].degree`}
                         type="select"
                       />
                       <CustomField
+                        index={index}
                         label={"დამთავრების რიცხვი"}
                         name={`education[${index}].graduation_date`}
                         type="date"
@@ -251,6 +333,7 @@ function Educate() {
                     </section>
                     <div className="flex flex-col gap-2 mt-1">
                       <CustomTextarea
+                        index={index}
                         label={"აღწერა"}
                         name={`education[${index}].description`}
                         type="text"
