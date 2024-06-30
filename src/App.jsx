@@ -22,7 +22,14 @@ function App() {
         description: "",
       },
     ],
-    education: [],
+    education: [
+      {
+        school: "",
+        degree: "",
+        graduation_date: "",
+        description: "",
+      },
+    ],
   };
   const [data, setData] = useState(storedData);
 
