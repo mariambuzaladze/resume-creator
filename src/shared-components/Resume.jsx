@@ -103,37 +103,41 @@ function Resume() {
                     <span>{e.ended_at ? e.ended_at : ""}</span>
                   </p>
                 </div>
-                <p className="text-base text-[#000] font-[400] leading-[1.38]">
+                <p className="h-5 text-base text-[#000] font-[400] leading-[1.38]">
                   {e.description ? e.description : ""}
                 </p>
               </div>
             );
           })}
         </section>
-        <section>
+        <section className="flex flex-col gap-4">
           <h2
-            className={
+            className={`${
               context.data.education.school ||
               context.data.education.degree ||
               context.data.education.graduation_date ||
               context.data.education.description
                 ? "flex"
                 : ""
-            }
+            }h-[22px] text-lg text-[#f93b1d] font-[700] leading-[22px] `}
           >
             ᲒᲐᲜᲐᲗᲚᲔᲑᲐ
           </h2>
           {context.data.education.map((e, index) => {
             return (
-              <div key={index}>
-                <div>
-                  <p>
-                    <span>{e.school ? `${e.school},` : ""}</span>
+              <div key={index} className="flex flex-col gap-4">
+                <div className="flex flex-col gap-[7px]">
+                  <p className="h-5 text-base text-[#1a1a1a] font-[500] leading-[20px]">
+                    <span>{e.school ? `${e.school}, ` : ""}</span>
                     <span>{e.degree ? e.degree : ""}</span>
                   </p>
-                  <span>{e.graduation_date ? e.graduation_date : ""}</span>
+                  <span className="h-[19px] text-base text-[#909090] font-[400] leading-[19px] italic">
+                    {e.graduation_date ? e.graduation_date : ""}
+                  </span>
                 </div>
-                <p>{e.description ? e.description : ""}</p>
+                <p className="text-base text-[#000] font-[400] leading-[1.38]">
+                  {e.description ? e.description : ""}
+                </p>
               </div>
             );
           })}

@@ -253,7 +253,7 @@ function Educate() {
 
   // handles submit saves data and moves to resume page
   const submitHandler = (values) => {
-    setData((prevData) => {
+    context.setData((prevData) => {
       const neweducationArray = [...values.education];
 
       return {
@@ -271,7 +271,7 @@ function Educate() {
       description: item.description,
     }));
 
-    localStorage.setItem("data", JSON.stringify(data));
+    localStorage.setItem("data", JSON.stringify(context.data));
     navigate("/resume");
   };
 
