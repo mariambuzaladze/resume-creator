@@ -10,8 +10,37 @@ import {
 import { dataContext } from "../../../App";
 import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import debounce from "lodash/debounce";
 
 function Educate() {
+  const handleInputChange = debounce((value, props) => {
+    setData((prevData) => {
+      const updatedEducation = prevData.education.map((item, idx) => {
+        if (idx === props.index) {
+          return {
+            ...item,
+            [props.name.split(".")[1]]: value,
+          };
+        }
+        return item;
+      });
+
+      if (props.index === prevData.education.length) {
+        updatedEducation.push({
+          [props.name.split(".")[1]]: value,
+        });
+      }
+
+      const updatedData = {
+        ...prevData,
+        education: updatedEducation,
+      };
+
+      localStorage.setItem("data", JSON.stringify(updatedData)); // Update localStorage
+      return updatedData;
+    });
+  }, 1000);
+
   const { data, setData } = useContext(dataContext);
   const navigate = useNavigate();
 
@@ -39,6 +68,10 @@ function Educate() {
         <input
           {...field}
           {...props}
+          onChange={(e) => {
+            field.onChange(e);
+            handleInputChange(e.target.value, props);
+          }}
           className={`${baseStyle} ${errorStyle} ${validStyle}`}
         />
         <p className={`text-sm ${messageColor}`}>{hint}</p>
@@ -76,6 +109,10 @@ function Educate() {
           <select
             {...field}
             {...props}
+            onChange={(e) => {
+              field.onChange(e);
+              handleInputChange(e.target.value, props);
+            }}
             className={`${baseStyle} ${errorStyle} ${validStyle}`}
           >
             <option value="" className="" hidden selected>
@@ -136,6 +173,10 @@ function Educate() {
         <textarea
           {...field}
           {...props}
+          onChange={(e) => {
+            field.onChange(e);
+            handleInputChange(e.target.value, props);
+          }}
           className={`${baseStyle} ${errorStyle} ${validStyle}`}
         ></textarea>
         <ErrorMessage
@@ -174,7 +215,7 @@ function Educate() {
   });
 
   // handles submit saves data and moves to resume page
-  const submitHandler = (values) => {
+  const submitHandler = async (values) => {
     setData((prevData) => {
       const neweducationArray = [...values.education];
 
@@ -195,6 +236,25 @@ function Educate() {
 
     localStorage.setItem("data", JSON.stringify(data));
     navigate("/resume");
+
+    try {
+      const response = await fetch("http://64.226.119.53:8000/resume", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(inputValues),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const responseData = await response.json();
+      console.log("POST request successful. Response:", responseData);
+    } catch (error) {
+      console.error("Error sending POST request:", error);
+    }
   };
 
   // it checks and ads new form
@@ -248,6 +308,8 @@ function Educate() {
       enableReinitialize={true}
       validationSchema={validationSchema}
       onSubmit={submitHandler}
+      validateOnChange={true}
+      validateOnBlur={false}
     >
       {({ isValid, submitForm, values }) => (
         <Form>
@@ -266,6 +328,7 @@ function Educate() {
                         type="text"
                         placeholder="სასწავლებელი"
                         hint={"მინიმუმ 2 სიმბოლო"}
+                        index={index}
                       />
                     </section>
 
@@ -274,12 +337,14 @@ function Educate() {
                         label={"ხარისხი"}
                         name={`education[${index}].degree`}
                         type="select"
+                        index={index}
                       />
                       <CustomField
                         label={"დამთავრების რიცხვი"}
                         name={`education[${index}].graduation_date`}
                         type="date"
                         className="w-[371px]"
+                        index={index}
                       />
                     </section>
                     <div className="flex flex-col gap-2 mt-1">
@@ -288,6 +353,7 @@ function Educate() {
                         name={`education[${index}].description`}
                         type="text"
                         placeholder="განათლების აღწერა"
+                        index={index}
                       />
                     </div>
                   </div>
