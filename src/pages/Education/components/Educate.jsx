@@ -135,7 +135,7 @@ function Educate() {
             <option value="სხვა">სხვა</option>
           </select>
           <img
-            src="/public/icon-arrow-down.svg"
+            src="/icon-arrow-down.svg"
             className="absolute right-[22px] top-[23px]"
             alt="Dropdown Icon"
           />
@@ -369,23 +369,23 @@ function Educate() {
                 <button
                   type="button"
                   onClick={() => handleAddNewForm(push, isValid, submitForm)}
-                  className="w-[289px] h-[48px] flex items-center justify-center rounded-[4px] bg-[#62a1eb] text-base text-[#fff] font-[400] leading-[20px] mt-[45px]"
+                  className="w-[289px] h-[48px] flex items-center justify-center rounded-[4px] bg-[#62a1eb] hover:bg-[#06538a] text-base text-[#fff] font-[400] leading-[20px] mt-[45px]"
                 >
                   სხვა სასწავლებლის დამატება
                 </button>
               </main>
             )}
           </FieldArray>
-          <div className="flex items-center justify-between mt-[200px]">
+          <div className="hidden xl:flex items-center justify-between mt-[200px]">
             <button
               onClick={() => navigate("/experience")}
-              className="w-[113px] h-12 flex items-center justify-center rounded-[4px] bg-[#6b40e3] text-base text-[#fff] font-[500] leading-[20px] tracking-[1.28px] "
+              className="w-[113px] h-12 flex items-center justify-center rounded-[4px] bg-[#512faf] hover:bg-[#7949ff] text-base text-[#fff] font-[500] leading-[20px] tracking-[1.28px] "
             >
               ᲣᲙᲐᲜ
             </button>
             <button
               type="submit"
-              className="w-[151px] h-12 flex items-center justify-center rounded-[4px] bg-[#6b40e3] text-base text-[#fff] font-[500] leading-[20px] tracking-[1.28px] "
+              className="w-[151px] h-12 flex items-center justify-center rounded-[4px] bg-[#512faf] hover:bg-[#7949ff] text-base text-[#fff] font-[500] leading-[20px] tracking-[1.28px] "
             >
               დასრულება
             </button>

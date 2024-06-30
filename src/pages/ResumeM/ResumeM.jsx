@@ -42,11 +42,11 @@ export default function ResumeM() {
     }
   }, []);
   return (
-    <main className="w-full flex justify-center pt-[54px] pb-[129px] relative">
+    <main className="w-full flex justify-center pt-[54px] pb-[129px] relative bg-[#fff] dark:bg-[#141625] ">
       <div className="absolute top-[45px] left-[48px]">
         <GoBack />
       </div>
-      <div className="min-h-[1080px] relative border-[0.8px] border-solid border-[#000]">
+      <div className="min-h-[1080px] relative border-[0.8px] border-solid border-[#000] dark:border-[#fff]">
         <Resume />
         <div className="absolute top-0 right-[-52px] transform translate-x-full">
           <Sent />
