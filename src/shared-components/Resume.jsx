@@ -5,7 +5,7 @@ function Resume() {
   const context = useContext(dataContext);
 
   return (
-    <main className="w-[822px] h-full bg-[#fff] flex flex-col justify-between px-20 py-[44px]">
+    <main className="min-w-[822px] h-full bg-[#fff] flex flex-col justify-between px-10 xl:px-20 py-10 xl:py-[44px] dark:bg-[#21232f]">
       <div className="flex flex-col gap-6">
         <section
           className={`${
@@ -33,7 +33,7 @@ function Resume() {
                       context.data.general.email ? "flex" : "hidden"
                     } w-5 h-5`}
                   />
-                  <span className="max-w-[300px] text-lg text-[#1a1a1a] font-[400] leading-[21px]">
+                  <span className="max-w-[300px] text-lg text-[#1a1a1a] dark:text-[#fff] font-[400] leading-[21px]">
                     {context.data.general.email
                       ? context.data.general.email
                       : ""}
@@ -47,7 +47,7 @@ function Resume() {
                       context.data.general.number ? "flex" : "hidden"
                     } w-5 h-5`}
                   />
-                  <span className="max-w-[300px] text-lg text-[#1a1a1a] font-[400] leading-[21px]">
+                  <span className="max-w-[300px] text-lg text-[#1a1a1a] dark:text-[#fff] font-[400] leading-[21px]">
                     {context.data.general.number
                       ? context.data.general.number
                       : ""}
@@ -59,11 +59,11 @@ function Resume() {
               <h2
                 className={`${
                   context.data.general.aboutMe ? "flex" : "hidden"
-                } h-[22px] text-lg text-[#f93b1d] font-[700] leading-[22px]`}
+                } h-[22px] text-lg text-[#f93b1d] dark:text-[#f7391c] font-[700] leading-[22px]`}
               >
                 ᲩᲔᲛ ᲨᲔᲡᲐᲮᲔᲑ
               </h2>
-              <p className="h-5 max-w-[432px] text-base text-[#000] font-[400] leading-[1.38]">
+              <p className="h-5 max-w-[432px] text-base text-[#000] dark:text-[#fff] font-[400] leading-[1.38]">
                 {context.data.general.aboutMe
                   ? context.data.general.aboutMe
                   : ""}
@@ -96,7 +96,7 @@ function Resume() {
                 context.data.experience.description)
                 ? "flex"
                 : "hidden"
-            } h-[22px] text-lg text-[#f93b1d] font-[700] leading-[22px] mb-[-9px]`}
+            } h-[22px] text-lg text-[#f93b1d] dark:text-[#f7391c] font-[700] leading-[22px] mb-[-9px]`}
           >
             ᲒᲐᲛᲝᲪᲓᲘᲚᲔᲑᲐ
           </h2>
@@ -104,17 +104,17 @@ function Resume() {
             return (
               <div key={index} className="flex flex-col gap-4">
                 <div className="flex flex-col gap-[7px]">
-                  <p className="h-5 text-base text-[#1a1a1a] font-[500] leading-[20px] ">
+                  <p className="h-5 text-base text-[#1a1a1a] dark:text-[#fff] font-[500] leading-[20px] ">
                     {e.position ? e.position : ""}{" "}
                     <span>{e.employer ? `, ${e.employer}` : ""}</span>
                   </p>
-                  <p className="h-[19px] text-base text-[#909090] font-[400] leading-[19px] italic">
+                  <p className="h-[19px] text-base text-[#909090] dark:text-[#fff] font-[400] leading-[19px] italic">
                     <span>{e.started_at ? e.started_at : ""}</span>
                     <span>{e.started_at || e.ended_at ? " - " : ""}</span>
                     <span>{e.ended_at ? e.ended_at : ""}</span>
                   </p>
                 </div>
-                <p className="h-5 text-base text-[#000] font-[400] leading-[1.38]">
+                <p className="h-5 text-base text-[#000] dark:text-[#fff] font-[400] leading-[1.38]">
                   {e.description ? e.description : ""}
                 </p>
               </div>
@@ -131,7 +131,7 @@ function Resume() {
                 context.data.education.description)
                 ? "flex"
                 : "hidden"
-            } h-[22px] text-lg text-[#f93b1d] font-[700] leading-[22px] `}
+            } h-[22px] text-lg text-[#f93b1d] dark:text-[#f7391c] font-[700] leading-[22px] `}
           >
             ᲒᲐᲜᲐᲗᲚᲔᲑᲐ
           </h2>
@@ -139,15 +139,15 @@ function Resume() {
             return (
               <div key={index} className="flex flex-col gap-4">
                 <div className="flex flex-col gap-[7px]">
-                  <p className="h-5 text-base text-[#1a1a1a] font-[500] leading-[20px]">
+                  <p className="h-5 text-base text-[#1a1a1a] dark:text-[#fff]  font-[500] leading-[20px]">
                     <span>{e.school ? `${e.school}, ` : ""}</span>
                     <span>{e.degree ? e.degree : ""}</span>
                   </p>
-                  <span className="h-[19px] text-base text-[#909090] font-[400] leading-[19px] italic">
+                  <span className="h-[19px] text-base text-[#909090] dark:text-[#fff] font-[400] leading-[19px] italic">
                     {e.graduation_date ? e.graduation_date : ""}
                   </span>
                 </div>
-                <p className="text-base text-[#000] font-[400] leading-[1.38]">
+                <p className="text-base text-[#000] font-[400] dark:text-[#fff] leading-[1.38]">
                   {e.description ? e.description : ""}
                 </p>
               </div>
@@ -158,7 +158,7 @@ function Resume() {
       <img
         src="/redberryMiniLogo.png"
         alt="logo"
-        className="w-[42px] h-[42px]"
+        className="w-[42px] h-[42px] mt-20"
       />
     </main>
   );

@@ -4,6 +4,7 @@ function Sent() {
   const [useSend, setUseSend] = useState(() => {
     return localStorage.getItem("useSend") === "true" || false;
   });
+
   console.log(localStorage.getItem("useSend"));
   const handleClose = () => {
     setUseSend(false);
@@ -25,7 +26,7 @@ function Sent() {
         className="absolute top-[14px] right-[8px] hover:cursor-pointer"
         onClick={handleClose}
       />
-      <p className="text-[28px] text-[#1a1a1a] font-[500] leading-[1.54]">
+      <p className="text-[28px] text-[#1a1a1a] dark:text-[#fff] font-[500] leading-[1.54]">
         რეზიუმე წარმატებით გაიგზავნა 🎉
       </p>
     </div>

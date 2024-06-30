@@ -35,6 +35,7 @@ export default function GoBack() {
           ],
         });
         navigate("/");
+        localStorage.setItem("useSend", true);
       }}
     >
       <circle cx="20" cy="20" r="20" fill="white" />
