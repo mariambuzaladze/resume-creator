@@ -8,7 +8,7 @@ import {
   ErrorMessage,
 } from "formik";
 import { dataContext } from "../../../App";
-import { useState, useContext, useEffect } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import debounce from "lodash/debounce";
 
@@ -83,7 +83,7 @@ function Educate() {
       </div>
     );
   };
-  //
+
   const CustomSelect = ({ label, hint, ...props }) => {
     const [field, meta] = useField(props);
     const errorStyle = meta.touched && meta.error ? "border-[#ef5050]" : "";
@@ -199,6 +199,14 @@ function Educate() {
       },
     ],
   });
+
+  // localstorage
+  useEffect(() => {
+    const storedData = JSON.parse(localStorage.getItem("data"));
+    if (storedData && storedData.education) {
+      setInitialValues({ education: storedData.education });
+    }
+  }, []);
 
   //validations for inputs
   const validationSchema = Yup.object().shape({
@@ -323,37 +331,37 @@ function Educate() {
                   >
                     <section className="gap-2 mt-[77px]">
                       <CustomField
+                        index={index}
                         label={"სასწავლებელი"}
                         name={`education[${index}].school`}
                         type="text"
                         placeholder="სასწავლებელი"
                         hint={"მინიმუმ 2 სიმბოლო"}
-                        index={index}
                       />
                     </section>
 
                     <section className="flex items-start justify-between flex-col lg:flex-row lg:items-center lg:gap-[60px]">
                       <CustomSelect
+                        index={index}
                         label={"ხარისხი"}
                         name={`education[${index}].degree`}
                         type="select"
-                        index={index}
                       />
                       <CustomField
+                        index={index}
                         label={"დამთავრების რიცხვი"}
                         name={`education[${index}].graduation_date`}
                         type="date"
                         className="w-[371px]"
-                        index={index}
                       />
                     </section>
                     <div className="flex flex-col gap-2 mt-1">
                       <CustomTextarea
+                        index={index}
                         label={"აღწერა"}
                         name={`education[${index}].description`}
                         type="text"
                         placeholder="განათლების აღწერა"
-                        index={index}
                       />
                     </div>
                   </div>
