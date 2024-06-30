@@ -4,6 +4,7 @@ function Sent() {
   const [useSend, setUseSend] = useState(() => {
     return localStorage.getItem("useSend") === "true" || false;
   });
+
   console.log(localStorage.getItem("useSend"));
   const handleClose = () => {
     setUseSend(false);
