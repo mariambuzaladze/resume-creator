@@ -110,6 +110,34 @@ function Resume() {
             );
           })}
         </section>
+        <section>
+          <h2
+            className={
+              context.data.education.school ||
+              context.data.education.degree ||
+              context.data.education.graduation_date ||
+              context.data.education.description
+                ? "flex"
+                : ""
+            }
+          >
+            ᲒᲐᲜᲐᲗᲚᲔᲑᲐ
+          </h2>
+          {context.data.education.map((e, index) => {
+            return (
+              <div key={index}>
+                <div>
+                  <p>
+                    <span>{e.school ? `${e.school},` : ""}</span>
+                    <span>{e.degree ? e.degree : ""}</span>
+                  </p>
+                  <span>{e.graduation_date ? e.graduation_date : ""}</span>
+                </div>
+                <p>{e.description ? e.description : ""}</p>
+              </div>
+            );
+          })}
+        </section>
       </div>
       <img
         src="/redberryMiniLogo.png"
