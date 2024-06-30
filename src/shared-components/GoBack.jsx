@@ -25,7 +25,14 @@ export default function GoBack() {
               description: "",
             },
           ],
-          education: [],
+          education: [
+            {
+              school: "",
+              degree: "",
+              graduation_date: "",
+              description: "",
+            },
+          ],
         });
         navigate("/");
       }}

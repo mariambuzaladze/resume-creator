@@ -10,36 +10,39 @@ import {
 import { dataContext } from "../../../App";
 import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import debounce from "lodash/debounce";
 
 function Educate() {
-  const context = useContext(dataContext);
+  const handleInputChange = debounce((value, props) => {
+    setData((prevData) => {
+      const updatedEducation = prevData.education.map((item, idx) => {
+        if (idx === props.index) {
+          return {
+            ...item,
+            [props.name.split(".")[1]]: value,
+          };
+        }
+        return item;
+      });
+
+      if (props.index === prevData.education.length) {
+        updatedEducation.push({
+          [props.name.split(".")[1]]: value,
+        });
+      }
+
+      const updatedData = {
+        ...prevData,
+        education: updatedEducation,
+      };
+
+      localStorage.setItem("data", JSON.stringify(updatedData)); // Update localStorage
+      return updatedData;
+    });
+  }, 1000);
+
+  const { data, setData } = useContext(dataContext);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const { general, experience } = context.data;
-
-    if (
-      !general ||
-      !general.name ||
-      !general.surname ||
-      !general.image ||
-      !general.email ||
-      !general.number
-    ) {
-      navigate("/private");
-    } else if (
-      experience.some(
-        (exp) =>
-          !exp.position ||
-          !exp.employer ||
-          !exp.started_at ||
-          !exp.ended_at ||
-          !exp.description
-      )
-    ) {
-      navigate("/experience");
-    }
-  }, []);
 
   const CustomField = ({ label, hint, ...props }) => {
     const [field, meta] = useField(props);
@@ -65,35 +68,11 @@ function Educate() {
         <input
           {...field}
           {...props}
-          className={`${baseStyle} ${errorStyle} ${validStyle}`}
-          onChange={(event) => {
-            field.onChange(event);
-
-            context.setData((prevData) => {
-              const updatedEducation = prevData.education.map((item, idx) => {
-                if (idx === props.index) {
-                  console.log([props.name.split(".")[1]]);
-                  return {
-                    ...item,
-                    [props.name.split(".")[1]]: event.target.value,
-                  };
-                }
-                return item;
-              });
-              console.log(updatedEducation);
-
-              if (props.index === prevData.education.length) {
-                updatedEducation.push({
-                  [props.name.split(".")[1]]: event.target.value,
-                });
-              }
-
-              return {
-                ...prevData,
-                education: updatedEducation,
-              };
-            });
+          onChange={(e) => {
+            field.onChange(e);
+            handleInputChange(e.target.value, props);
           }}
+          className={`${baseStyle} ${errorStyle} ${validStyle}`}
         />
         <p className={`text-sm ${messageColor}`}>{hint}</p>
         <ErrorMessage
@@ -130,28 +109,11 @@ function Educate() {
           <select
             {...field}
             {...props}
-            className={`${baseStyle} ${errorStyle} ${validStyle}`}
-            onChange={(event) => {
-              field.onChange(event);
-
-              context.setData((prevData) => {
-                const updatedEducation = prevData.education.map((item, idx) => {
-                  if (idx === props.index) {
-                    console.log([props.name.split(".")[1]]);
-                    return {
-                      ...item,
-                      [props.name.split(".")[1]]: event.target.value,
-                    };
-                  }
-                  return item;
-                });
-
-                return {
-                  ...prevData,
-                  education: updatedEducation,
-                };
-              });
+            onChange={(e) => {
+              field.onChange(e);
+              handleInputChange(e.target.value, props);
             }}
+            className={`${baseStyle} ${errorStyle} ${validStyle}`}
           >
             <option value="" className="" hidden selected>
               აირჩიეთ ხარისხი
@@ -211,28 +173,11 @@ function Educate() {
         <textarea
           {...field}
           {...props}
-          className={`${baseStyle} ${errorStyle} ${validStyle}`}
-          onChange={(event) => {
-            field.onChange(event);
-
-            context.setData((prevData) => {
-              const updatedEducation = prevData.education.map((item, idx) => {
-                if (idx === props.index) {
-                  console.log([props.name.split(".")[1]]);
-                  return {
-                    ...item,
-                    [props.name.split(".")[1]]: event.target.value,
-                  };
-                }
-                return item;
-              });
-
-              return {
-                ...prevData,
-                education: updatedEducation,
-              };
-            });
+          onChange={(e) => {
+            field.onChange(e);
+            handleInputChange(e.target.value, props);
           }}
+          className={`${baseStyle} ${errorStyle} ${validStyle}`}
         ></textarea>
         <ErrorMessage
           name={props.name}
@@ -278,8 +223,8 @@ function Educate() {
   });
 
   // handles submit saves data and moves to resume page
-  const submitHandler = (values) => {
-    context.setData((prevData) => {
+  const submitHandler = async (values) => {
+    setData((prevData) => {
       const neweducationArray = [...values.education];
 
       return {
@@ -297,8 +242,27 @@ function Educate() {
       description: item.description,
     }));
 
-    localStorage.setItem("data", JSON.stringify(context.data));
+    localStorage.setItem("data", JSON.stringify(data));
     navigate("/resume");
+
+    try {
+      const response = await fetch("http://64.226.119.53:8000/resume", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(inputValues),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const responseData = await response.json();
+      console.log("POST request successful. Response:", responseData);
+    } catch (error) {
+      console.error("Error sending POST request:", error);
+    }
   };
 
   // it checks and ads new form
@@ -314,12 +278,46 @@ function Educate() {
       console.log("Form is not valid. Please correct errors.");
     }
   };
+
+  useEffect(() => {
+    const { general, experience } = data;
+    const storedData = JSON.parse(localStorage.getItem("data"));
+
+    if (
+      !general ||
+      !general.name ||
+      !general.surname ||
+      !general.image ||
+      !general.email ||
+      !general.number
+    ) {
+      navigate("/private");
+    } else if (
+      experience.some(
+        (exp) =>
+          !exp.position ||
+          !exp.employer ||
+          !exp.started_at ||
+          !exp.ended_at ||
+          !exp.description
+      )
+    ) {
+      navigate("/experience");
+    }
+
+    if (storedData && storedData.education && storedData.education.length > 0) {
+      setInitialValues({ education: storedData.education });
+    }
+  }, []);
+
   return (
     <Formik
       initialValues={initialValues}
       enableReinitialize={true}
       validationSchema={validationSchema}
       onSubmit={submitHandler}
+      validateOnChange={true}
+      validateOnBlur={false}
     >
       {({ isValid, submitForm, values }) => (
         <Form>
